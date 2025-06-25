@@ -1,0 +1,1 @@
+// Archivo para las configuraciones del tema de la aplicación
