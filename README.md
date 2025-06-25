@@ -73,4 +73,4 @@ Agradecemos al Dr. Alberto Martínez Barbosa por su guía durante el desarrollo 
 
 ---
 
-**Desarrollado por:** [Kevin Rafael Díaz López, Sergio Elías Robles Ignacio, Rosendo Edén Mendoza Casarrubia]
+**Desarrollado por:** Kevin Rafael Díaz López, Sergio Elías Robles Ignacio, Rosendo Edén Mendoza Casarrubia
