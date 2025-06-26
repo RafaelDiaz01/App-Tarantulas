@@ -11,11 +11,12 @@ final appColorScheme = ColorScheme.fromSeed(
 
 // Varible final que define el estilo que se le dara a los textos de la aplicacion.
 final appTextTheme = GoogleFonts.inconsolataTextTheme().copyWith(
+  bodySmall: GoogleFonts.inconsolata(fontWeight: FontWeight.normal, fontSize: 14),
   bodyMedium: GoogleFonts.inconsolata(fontWeight: FontWeight.normal, fontSize: 16),
   bodyLarge: GoogleFonts.inconsolata(fontWeight: FontWeight.normal, fontSize: 18),
-  titleLarge: GoogleFonts.inconsolata(fontWeight: FontWeight.bold, fontSize: 20),
-  titleMedium: GoogleFonts.inconsolata(fontWeight: FontWeight.bold, fontSize: 18),
-  titleSmall: GoogleFonts.inconsolata(fontWeight: FontWeight.bold, fontSize: 16),
+  titleLarge: GoogleFonts.inconsolata(fontWeight: FontWeight.bold, fontSize: 50),
+  titleMedium: GoogleFonts.inconsolata(fontWeight: FontWeight.bold, fontSize: 25),
+  titleSmall: GoogleFonts.inconsolata(fontWeight: FontWeight.bold, fontSize: 20),
 );
 
 final appTheme = ThemeData().copyWith(
