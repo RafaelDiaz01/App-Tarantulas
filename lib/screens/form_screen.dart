@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import '../configurations/app_theme.dart'; // Importa tu tema
 
+// Define el color azul claro que quieres usar (puedes usar uno del tema o definir uno aquí)
+final Color azulClaro = const Color(0xFF42A5F5); // Azul claro, puedes cambiarlo
+
 class FormScreen extends StatefulWidget {
   const FormScreen({super.key});
 
@@ -188,13 +191,19 @@ class _FormScreenState extends State<FormScreen>
                   Expanded(
                     child: DropdownButtonFormField<String>(
                       value: _sexo,
+                      dropdownColor: appColorScheme.background,
                       decoration: InputDecoration(labelText: 'Sexo'),
                       items:
                           ['Masculino', 'Femenino', 'Otro']
                               .map(
                                 (sexo) => DropdownMenuItem(
                                   value: sexo,
-                                  child: Text(sexo),
+                                  child: Text(
+                                    sexo,
+                                    style: TextStyle(
+                                      color: azulClaro,
+                                    ), // Cambia el color aquí
+                                  ),
                                 ),
                               )
                               .toList(),
@@ -234,7 +243,8 @@ class _FormScreenState extends State<FormScreen>
                     _nivelEstudiosController.text.isEmpty
                         ? null
                         : _nivelEstudiosController.text,
-                decoration: InputDecoration(labelText: 'Nivel de estudios'),
+                dropdownColor: appColorScheme.background,
+                decoration: InputDecoration(labelText: 'Escolaridad'),
                 items:
                     [
                           'Primaria',
@@ -258,10 +268,6 @@ class _FormScreenState extends State<FormScreen>
                 },
               ),
               TextField(
-                controller: _escolaridadController,
-                decoration: InputDecoration(labelText: 'Escolaridad actual'),
-              ),
-              TextField(
                 controller: _fuenteTrabajoController,
                 decoration: InputDecoration(
                   labelText: 'Fuente principal de trabajo',
@@ -278,11 +284,34 @@ class _FormScreenState extends State<FormScreen>
                 controller: _grupoEtnicoController,
                 decoration: InputDecoration(labelText: 'Grupo étnico'),
               ),
-              TextField(
-                controller: _tenenciaTierraController,
+              DropdownButtonFormField<String>(
+                value:
+                    _tenenciaTierraController.text.isEmpty
+                        ? null
+                        : _tenenciaTierraController.text,
+                dropdownColor: appColorScheme.background,
+
                 decoration: InputDecoration(
                   labelText: 'Tenencia de la tierra (comunal, privada)',
                 ),
+                items:
+                    ['Comunal', 'Privada']
+                        .map(
+                          (opcion) => DropdownMenuItem(
+                            value: opcion,
+                            child: Text(
+                              opcion,
+                              style: TextStyle(color: azulClaro), // Mismo color
+                            ),
+                          ),
+                        )
+                        .toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _tenenciaTierraController.text = value!;
+                    _updateProgress();
+                  });
+                },
               ),
               TextField(
                 controller: _numHijosController,
