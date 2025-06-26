@@ -17,16 +17,13 @@ class MyHomeScreen extends StatelessWidget {
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => const Configuration()),
+              MaterialPageRoute(
+                builder:
+                    (context) => Configuration(onToggleTheme: onToggleTheme),
+              ),
             );
           },
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.brightness_6),
-            onPressed: onToggleTheme,
-          ),
-        ],
       ),
       body: Stack(
         children: [

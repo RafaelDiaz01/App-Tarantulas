@@ -5,8 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 // Sirve para definir el tema de la aplicacion.
 final appColorScheme = ColorScheme.fromSeed(
   brightness: Brightness.dark,
-  seedColor: const Color.fromARGB(255, 26, 111, 209),
-  surface: const Color.fromARGB(255, 26, 111, 209),
+  seedColor: const Color.fromARGB(255, 1, 58, 99),
+  surface: const Color.fromARGB(255, 1, 58, 99),
 );
 
 // Varible final que define el estilo que se le dara a los textos de la aplicacion.
@@ -14,7 +14,7 @@ final appTextTheme = GoogleFonts.inconsolataTextTheme().copyWith(
   bodySmall: GoogleFonts.inconsolata(fontWeight: FontWeight.normal, fontSize: 14),
   bodyMedium: GoogleFonts.inconsolata(fontWeight: FontWeight.normal, fontSize: 16),
   bodyLarge: GoogleFonts.inconsolata(fontWeight: FontWeight.normal, fontSize: 18),
-  titleLarge: GoogleFonts.inconsolata(fontWeight: FontWeight.bold, fontSize: 50),
+  titleLarge: GoogleFonts.inconsolata(fontWeight: FontWeight.bold, fontSize: 40),
   titleMedium: GoogleFonts.inconsolata(fontWeight: FontWeight.bold, fontSize: 25),
   titleSmall: GoogleFonts.inconsolata(fontWeight: FontWeight.bold, fontSize: 20),
 );
