@@ -23,30 +23,27 @@ class Usuario extends HiveObject {
   String grupoEtnico;
 
   @HiveField(6)
-  String nivelEstudios;
-
-  @HiveField(7)
   String fuenteTrabajo;
 
-  @HiveField(8)
+  @HiveField(7)
   String escolaridad;
 
-  @HiveField(9)
+  @HiveField(8)
   String tenenciaTierra;
 
-  @HiveField(10)
+  @HiveField(9)
   String estadoCivil;
 
-  @HiveField(11)
+  @HiveField(10)
   String lugarOrigen;
 
-  @HiveField(12)
+  @HiveField(11)
   int numeroHijos;
 
-  @HiveField(13)
+  @HiveField(12)
   String localidad;
 
-  @HiveField(14)
+  @HiveField(13)
   DateTime fechaRegistro;
 
   Usuario({
@@ -56,7 +53,6 @@ class Usuario extends HiveObject {
     required this.sexo,
     required this.lenguaMaterna,
     required this.grupoEtnico,
-    required this.nivelEstudios,
     required this.fuenteTrabajo,
     required this.escolaridad,
     required this.tenenciaTierra,

@@ -23,15 +23,14 @@ class UsuarioAdapter extends TypeAdapter<Usuario> {
       sexo: fields[3] as String,
       lenguaMaterna: fields[4] as String,
       grupoEtnico: fields[5] as String,
-      nivelEstudios: fields[6] as String,
-      fuenteTrabajo: fields[7] as String,
-      escolaridad: fields[8] as String,
-      tenenciaTierra: fields[9] as String,
-      estadoCivil: fields[10] as String,
-      lugarOrigen: fields[11] as String,
-      numeroHijos: fields[12] as int,
-      localidad: fields[13] as String,
-      fechaRegistro: fields[14] as DateTime,
+      fuenteTrabajo: fields[6] as String,
+      escolaridad: fields[7] as String,
+      tenenciaTierra: fields[8] as String,
+      estadoCivil: fields[9] as String,
+      lugarOrigen: fields[10] as String,
+      numeroHijos: fields[11] as int,
+      localidad: fields[12] as String,
+      fechaRegistro: fields[13] as DateTime,
     );
   }
 
@@ -52,22 +51,20 @@ class UsuarioAdapter extends TypeAdapter<Usuario> {
       ..writeByte(5)
       ..write(obj.grupoEtnico)
       ..writeByte(6)
-      ..write(obj.nivelEstudios)
-      ..writeByte(7)
       ..write(obj.fuenteTrabajo)
-      ..writeByte(8)
+      ..writeByte(7)
       ..write(obj.escolaridad)
-      ..writeByte(9)
+      ..writeByte(8)
       ..write(obj.tenenciaTierra)
-      ..writeByte(10)
+      ..writeByte(9)
       ..write(obj.estadoCivil)
-      ..writeByte(11)
+      ..writeByte(10)
       ..write(obj.lugarOrigen)
-      ..writeByte(12)
+      ..writeByte(11)
       ..write(obj.numeroHijos)
-      ..writeByte(13)
+      ..writeByte(12)
       ..write(obj.localidad)
-      ..writeByte(14)
+      ..writeByte(13)
       ..write(obj.fechaRegistro);
   }
 
