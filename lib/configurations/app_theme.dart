@@ -14,7 +14,7 @@ final appTextTheme = GoogleFonts.inconsolataTextTheme().copyWith(
   bodySmall: GoogleFonts.inconsolata(fontWeight: FontWeight.normal, fontSize: 14),
   bodyMedium: GoogleFonts.inconsolata(fontWeight: FontWeight.normal, fontSize: 16),
   bodyLarge: GoogleFonts.inconsolata(fontWeight: FontWeight.normal, fontSize: 18),
-  titleLarge: GoogleFonts.inconsolata(fontWeight: FontWeight.bold, fontSize: 80),
+  titleLarge: GoogleFonts.inconsolata(fontWeight: FontWeight.bold, fontSize: 50),
   titleMedium: GoogleFonts.inconsolata(fontWeight: FontWeight.bold, fontSize: 25),
   titleSmall: GoogleFonts.inconsolata(fontWeight: FontWeight.bold, fontSize: 20),
 );

@@ -39,7 +39,7 @@ class MyHomeScreen extends StatelessWidget {
                   Container(
                     alignment: Alignment.center,
                     padding: const EdgeInsets.symmetric(
-                      vertical: 120,
+                      vertical: 80,
                       horizontal: 20,
                     ),
                     child: Column(
