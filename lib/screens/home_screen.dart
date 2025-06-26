@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:app_tarantulas/widgets/configuration.dart';
+import 'package:app_tarantulas/screens/form_screen.dart'; // Asegúrate de que la ruta sea correcta
 
 class MyHomeScreen extends StatelessWidget {
   final String title;
@@ -46,32 +47,23 @@ class MyHomeScreen extends StatelessWidget {
                       children: [
                         Text(
                           'Protege a las tarántulas',
-                          style:
-                              Theme.of(
-                                context,
-                              ).textTheme.titleLarge?.copyWith(),
+                          style: Theme.of(context).textTheme.titleLarge,
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 6),
                         Text(
                           'Universidad de la Sierra Juárez',
-                          style: Theme.of(
-                            context,
-                          ).textTheme.titleMedium?.copyWith(
-                            fontStyle: FontStyle.italic,
-                            color: Colors.black,
-                          ),
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                fontStyle: FontStyle.italic,
+                                color: Colors.black,
+                              ),
                           textAlign: TextAlign.center,
                         ),
                         const SizedBox(height: 60),
                         Center(
                           child: SizedBox(
-                            width:
-                                MediaQuery.of(context).size.width *
-                                0.6, // 60% del ancho de pantalla
-                            height:
-                                MediaQuery.of(context).size.height *
-                                0.2, // 20% del alto de pantalla
+                            width: MediaQuery.of(context).size.width * 0.6,
+                            height: MediaQuery.of(context).size.height * 0.2,
                             child: Lottie.asset(
                               'assets/animations/tarantula.json',
                               fit: BoxFit.contain,
@@ -85,15 +77,21 @@ class MyHomeScreen extends StatelessWidget {
                   Text(
                     "Contesta esta breve encuesta y contribuye a la preservación de las tarántulas",
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontStyle: FontStyle.italic,
-                    ),
+                          fontStyle: FontStyle.italic,
+                        ),
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 40),
-                  SizedBox(
-                    width: 50, // Ajusta el ancho deseado
+                  Center(
                     child: IconButton.filled(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const FormScreen(),
+                          ),
+                        );
+                      },
                       icon: const Icon(Icons.play_arrow, size: 40),
                     ),
                   ),
