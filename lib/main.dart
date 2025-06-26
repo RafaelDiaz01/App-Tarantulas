@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
       theme: appTheme,
       debugShowCheckedModeBanner: false, // Desactiva el banner de debug
       home: const MyHomeScreen(title: 'Tliltocatl Schroederi'),
+      //home: const FormScreen(),
     );
   }
 }
