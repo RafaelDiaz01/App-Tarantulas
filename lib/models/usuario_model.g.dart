@@ -31,6 +31,7 @@ class UsuarioAdapter extends TypeAdapter<Usuario> {
       numeroHijos: fields[11] as int,
       localidad: fields[12] as String,
       fechaRegistro: fields[13] as DateTime,
+      respuestas: (fields[14] as Map?)?.cast<String, String>(),
     );
   }
 
@@ -65,7 +66,9 @@ class UsuarioAdapter extends TypeAdapter<Usuario> {
       ..writeByte(12)
       ..write(obj.localidad)
       ..writeByte(13)
-      ..write(obj.fechaRegistro);
+      ..write(obj.fechaRegistro)
+      ..writeByte(14)
+      ..write(obj.respuestas);
   }
 
   @override

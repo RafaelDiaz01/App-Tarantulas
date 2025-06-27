@@ -8,6 +8,9 @@ import 'package:uuid/uuid.dart';
 import 'package:hive/hive.dart';
 import '../models/usuario_model.dart';
 import '../configurations/app_theme.dart';
+import '../screens/encuestaScreen.dart';
+
+final Color azulClaro = const Color(0xFF42A5F5);
 
 class FormScreen extends StatefulWidget {
   const FormScreen({super.key});
@@ -16,8 +19,7 @@ class FormScreen extends StatefulWidget {
   State<FormScreen> createState() => _FormScreenState();
 }
 
-class _FormScreenState extends State<FormScreen>
-    with SingleTickerProviderStateMixin {
+class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   late AnimationController _controller;
   late Animation<double> _animation;
@@ -117,7 +119,13 @@ class _FormScreenState extends State<FormScreen>
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Usuario guardado con éxito')),
       );
-      Navigator.pop(context);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EncuestaScreen(usuario: nuevoUsuario),
+        ),
+      );
     }
   }
 
@@ -181,7 +189,7 @@ class _FormScreenState extends State<FormScreen>
         style: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: appColorScheme.primary,
+          color: Theme.of(context).colorScheme.primary,
         ),
       ),
     );
@@ -195,7 +203,7 @@ class _FormScreenState extends State<FormScreen>
           "Configuraciones",
           style: Theme.of(context).textTheme.titleMedium?.copyWith(),
         ),
-        backgroundColor: appColorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(4),
           child: AnimatedBuilder(
@@ -255,7 +263,7 @@ class _FormScreenState extends State<FormScreen>
                     Expanded(
                       child: DropdownButtonFormField<String>(
                         value: _sexo,
-                        dropdownColor: appColorScheme.background,
+                        dropdownColor: Theme.of(context).colorScheme.background,
                         decoration: const InputDecoration(
                           labelText: 'Sexo',
                           border: OutlineInputBorder(
@@ -273,7 +281,10 @@ class _FormScreenState extends State<FormScreen>
                                       style: Theme.of(
                                         context,
                                       ).textTheme.bodyMedium?.copyWith(
-                                        color: appColorScheme.secondary,
+                                        color:
+                                            Theme.of(
+                                              context,
+                                            ).colorScheme.secondary,
                                       ),
                                     ),
                                   ),
@@ -298,7 +309,7 @@ class _FormScreenState extends State<FormScreen>
                             _estadoCivilController.text.isEmpty
                                 ? null
                                 : _estadoCivilController.text,
-                        dropdownColor: appColorScheme.background,
+                        dropdownColor: Theme.of(context).colorScheme.background,
                         decoration: const InputDecoration(
                           labelText: 'Estado civil',
                           border: OutlineInputBorder(
@@ -322,7 +333,7 @@ class _FormScreenState extends State<FormScreen>
                                       style: Theme.of(
                                         context,
                                       ).textTheme.bodyMedium?.copyWith(
-                                        color: appColorScheme.secondary,
+                                        color: Theme.of(context).colorScheme.secondary,
                                       ),
                                     ),
                                   ),
@@ -366,7 +377,7 @@ class _FormScreenState extends State<FormScreen>
                 _buildSectionTitle('EDUCACIÓN Y TRABAJO'),
                 DropdownButtonFormField<String>(
                   value: _nivelEstudios,
-                  dropdownColor: appColorScheme.background,
+                  dropdownColor: Theme.of(context).colorScheme.background,
                   decoration: const InputDecoration(
                     labelText: 'Escolaridad',
                     border: OutlineInputBorder(
@@ -388,7 +399,7 @@ class _FormScreenState extends State<FormScreen>
                               child: Text(
                                 nivel,
                                 style: Theme.of(context).textTheme.bodyMedium
-                                    ?.copyWith(color: appColorScheme.secondary),
+                                    ?.copyWith(color: Theme.of(context).colorScheme.secondary),
                               ),
                             ),
                           )
@@ -442,7 +453,7 @@ class _FormScreenState extends State<FormScreen>
                       _tenenciaTierraController.text.isEmpty
                           ? null
                           : _tenenciaTierraController.text,
-                  dropdownColor: appColorScheme.background,
+                  dropdownColor: Theme.of(context).colorScheme.background,
                   decoration: const InputDecoration(
                     labelText: 'Tenencia de la tierra',
                     border: OutlineInputBorder(
@@ -458,7 +469,7 @@ class _FormScreenState extends State<FormScreen>
                               child: Text(
                                 opcion,
                                 style: Theme.of(context).textTheme.bodyMedium
-                                    ?.copyWith(color: appColorScheme.secondary),
+                                    ?.copyWith(color: Theme.of(context).colorScheme.secondary),
                               ),
                             ),
                           )
@@ -488,7 +499,7 @@ class _FormScreenState extends State<FormScreen>
                   icon: const Icon(Icons.save),
                   label: const Text('Guardar'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: appColorScheme.primary,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24,

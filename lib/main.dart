@@ -1,20 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:app_tarantulas/screens/home_screen.dart';
+import 'package:app_tarantulas/screens/encuestaScreen.dart';
+import 'package:app_tarantulas/screens/resultados_screen.dart';
 import 'package:app_tarantulas/configurations/app_theme.dart';
-import 'package:app_tarantulas/models/usuario_model.dart'; // importa el modelo
+import 'package:app_tarantulas/models/usuario_model.dart';
+import 'package:app_tarantulas/models/encuesta_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Inicializa Hive
   await Hive.initFlutter();
 
-  // Registra el adapter
   Hive.registerAdapter(UsuarioAdapter());
+  Hive.registerAdapter(EncuestaAdapter());
 
-  // Abre la caja para guardar usuarios
+  await Hive.close();
+
+  await Hive.deleteBoxFromDisk('usuarios');
+  await Hive.deleteBoxFromDisk('encuestas');
+
   await Hive.openBox<Usuario>('usuarios');
+  await Hive.openBox<Encuesta>('encuestas');
 
   runApp(const MyApp());
 }
@@ -41,14 +47,23 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'App Tarantulas',
       themeMode: _themeMode,
-      theme: appTheme.copyWith(brightness: Brightness.light), // Tema claro
-      darkTheme: appTheme.copyWith(brightness: Brightness.dark), // Tema oscuro
+      theme: appThemeLight, // Tema claro
+      darkTheme: appThemeDark, // Tema oscuro
       debugShowCheckedModeBanner: false,
       home: MyHomeScreen(
         title: 'Tliltocatl Schroederi',
-        onToggleTheme: _toggleTheme, // Pasamos la función al home
+        onToggleTheme: _toggleTheme,
       ),
+      routes: {
+        '/encuesta': (context) {
+          final args = ModalRoute.of(context)!.settings.arguments as Usuario;
+          return EncuestaScreen(usuario: args);
+        },
+        '/resultados': (context) {
+          final args = ModalRoute.of(context)!.settings.arguments as Usuario;
+          return ResultadosScreen(usuario: args);
+        },
+      },
     );
   }
 }
-

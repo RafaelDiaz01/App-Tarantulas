@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:app_tarantulas/widgets/about.dart';
 
 class Configuration extends StatelessWidget {
   final VoidCallback? onToggleTheme;
@@ -50,12 +51,32 @@ class Configuration extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             const Divider(),
-            // Sección 2: Otro ejemplo de sección
+            // Sección 2: Acerca de
             Row(
               children: [
                 IconButton(
                   icon: const Icon(Icons.info_outline),
-                  onPressed: (){},
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder:
+                          (context) => AlertDialog(
+                            title: const Text('Acerca de'),
+                            content: SizedBox(
+                              width: double.maxFinite,
+                              // Ajusta la altura máxima según lo que necesites
+                              height: 400,
+                              child: SingleChildScrollView(child: About()),
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text('Cerrar'), 
+                              ),
+                            ],
+                          ),
+                    );
+                  },
                 ),
                 const SizedBox(width: 10),
                 Column(
