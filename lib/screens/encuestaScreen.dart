@@ -15,7 +15,8 @@ class EncuestaScreen extends StatefulWidget {
 class _EncuestaScreenState extends State<EncuestaScreen> {
   int _currentIndex = 0;
   final Map<String, String> _respuestas = {};
-  final TextEditingController _respuestaAbiertaController = TextEditingController();
+  final TextEditingController _respuestaAbiertaController =
+      TextEditingController();
   bool _guardando = false;
   String _textoRespuesta = '';
 
@@ -63,7 +64,9 @@ class _EncuestaScreenState extends State<EncuestaScreen> {
 
   Future<void> _finalizarEncuesta() async {
     final box = await Hive.openBox<Usuario>('usuariosBox');
-    final index = box.values.toList().indexWhere((u) => u.id == widget.usuario.id);
+    final index = box.values.toList().indexWhere(
+      (u) => u.id == widget.usuario.id,
+    );
 
     if (index != -1) {
       final actualizado = widget.usuario.copyWith(respuestas: _respuestas);
@@ -93,23 +96,29 @@ class _EncuestaScreenState extends State<EncuestaScreen> {
     final opciones = pregunta['opciones'] as List<String>?;
 
     return Scaffold(
-      appBar: AppBar(title: Text('Pregunta ${_currentIndex + 1}')),
+      appBar: AppBar(
+        title: Text(
+          'Pregunta ${_currentIndex + 1}',
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+        ),
+      ),
       body: Container(
         padding: const EdgeInsets.all(24),
-        decoration: const BoxDecoration(
-          gradient: RadialGradient(colors: [Colors.deepPurple, Colors.deepPurpleAccent]),
-        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              textoPregunta,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+            Container(
+              color: Theme.of(context).colorScheme.primary,
+              child: Padding(
+                padding: EdgeInsets.all(10),
+                child: Text(
+                  textoPregunta,
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(),
+                  textAlign: TextAlign.center,
+                ),
               ),
-              textAlign: TextAlign.center,
             ),
             const SizedBox(height: 30),
             if (_esAbierta()) ...[
