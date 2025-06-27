@@ -31,7 +31,7 @@ final appTextTheme = GoogleFonts.inconsolataTextTheme().copyWith(
 );
 
 final appTextName = GoogleFonts.michromaTextTheme().copyWith(
-  titleLarge: GoogleFonts.michroma(fontWeight: FontWeight.bold, fontSize: 55),
+  titleLarge: GoogleFonts.michroma(fontWeight: FontWeight.bold, fontSize: 40),
 );
 
 final appThemeLight = ThemeData(

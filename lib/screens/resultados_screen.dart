@@ -24,84 +24,93 @@ class ResultadosScreen extends StatelessWidget {
       ..remove(comentarioFinalEntry.key);
 
     return Scaffold(
-appBar: AppBar(
-  title: Text(
-    'Resultados',
-    style: theme.textTheme.titleMedium,
-  ),
-  elevation: 4,
-  shadowColor: theme.colorScheme.primary.withOpacity(0.5),
-  actions: [
-    IconButton(
-      tooltip: 'Exportar PDF',
-      icon: Icon(Icons.picture_as_pdf, color: theme.colorScheme.onPrimary),
-      onPressed: () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Exportar PDF... (pendiente)')),
-        );
-      },
-    ),
-    IconButton(
-      tooltip: 'Regresar al inicio',
-      icon: Icon(Icons.home, color: theme.colorScheme.onPrimary),
-      onPressed: () {
-        Navigator.popUntil(context, (route) => route.isFirst);
-      },
-    ),
-  ],
-),
+      appBar: AppBar(
+        title: Text('Resultados', style: theme.textTheme.titleMedium),
+        elevation: 4,
+        shadowColor: theme.colorScheme.primary.withOpacity(0.5),
+        actions: [
+          IconButton(
+            tooltip: 'Exportar PDF',
+            icon: Icon(Icons.picture_as_pdf),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Exportar PDF... (pendiente)')),
+              );
+            },
+          ),
+          IconButton(
+            tooltip: 'Regresar al inicio',
+            icon: Icon(Icons.home),
+            onPressed: () {
+              Navigator.popUntil(context, (route) => route.isFirst);
+            },
+          ),
+        ],
+      ),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
           children: [
             _buildUsuarioHeader(theme),
             const SizedBox(height: 24),
-            Divider(color: theme.colorScheme.onSurface.withOpacity(0.25), thickness: 1.2),
+            Divider(
+              color: theme.colorScheme.onSurface.withOpacity(0.25),
+              thickness: 1.2,
+            ),
             const SizedBox(height: 20),
             ..._buildRespuestaCards(respuestasSinComentario, theme, isDark),
             if (comentarioFinalEntry.key.isNotEmpty) ...[
               const SizedBox(height: 30),
-              Divider(color: theme.colorScheme.primary.withOpacity(0.3), thickness: 1.5),
+              Divider(
+                color: theme.colorScheme.primary.withOpacity(0.3),
+                thickness: 1.5,
+              ),
               const SizedBox(height: 20),
               _animatedCard(
                 respuestasSinComentario.length,
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Comentario Final',
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: theme.colorScheme.primary,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    Container(
-                      decoration: BoxDecoration(
-                        color: isDark
-                            ? theme.colorScheme.surfaceVariant.withOpacity(0.5)
-                            : theme.colorScheme.primary.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(14),
-                        boxShadow: [
-                          if (!isDark)
-                            BoxShadow(
-                              color: theme.colorScheme.primary.withOpacity(0.15),
-                              offset: const Offset(0, 2),
-                              blurRadius: 6,
-                            ),
-                        ],
-                      ),
-                      padding: const EdgeInsets.all(16),
-                      child: Text(
-                        comentarioFinalEntry.value,
-                        style: theme.textTheme.bodyLarge?.copyWith(
-                          fontStyle: FontStyle.italic,
-                          color: isDark ? Colors.grey[300] : Colors.grey[800],
-                          height: 1.4,
+                SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Comentario Final',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: theme.colorScheme.primary,
                         ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 12),
+                      Container(
+                        decoration: BoxDecoration(
+                          color:
+                              isDark
+                                  ? theme.colorScheme.surfaceVariant
+                                      .withOpacity(0.5)
+                                  : theme.colorScheme.primary.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(14),
+                          boxShadow: [
+                            if (!isDark)
+                              BoxShadow(
+                                color: theme.colorScheme.primary.withOpacity(
+                                  0.15,
+                                ),
+                                offset: const Offset(0, 2),
+                                blurRadius: 6,
+                              ),
+                          ],
+                        ),
+                        padding: const EdgeInsets.all(16),
+                        child: Text(
+                          comentarioFinalEntry.value,
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            fontStyle: FontStyle.italic,
+                            color: isDark ? Colors.grey[300] : Colors.grey[800],
+                            height: 1.4,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -125,14 +134,17 @@ appBar: AppBar(
 
     final pdfBytes = await PdfGenerator.generateFromResultados(
       usuario: usuario,
-      respuestas: respuestasSinComentario, // <-- Ahora sí, todas las respuestas menos el comentario final
+      respuestas:
+          respuestasSinComentario, // <-- Ahora sí, todas las respuestas menos el comentario final
     );
 
     final output = await getTemporaryDirectory();
     final file = File('${output.path}/reporte_resultados.pdf');
     await file.writeAsBytes(pdfBytes);
 
-    await Share.shareXFiles([XFile(file.path)], text: 'Te comparto el PDF de resultados.');
+    await Share.shareXFiles([
+      XFile(file.path),
+    ], text: 'Te comparto el PDF de resultados.');
   }
 
   Widget _buildUsuarioHeader(ThemeData theme) {
@@ -160,8 +172,16 @@ appBar: AppBar(
               ),
               const SizedBox(height: 10),
               _infoRow('Nombre', usuario.nombre, theme.textTheme.bodyLarge),
-              _infoRow('Edad', usuario.edad.toString(), theme.textTheme.bodyLarge),
-              _infoRow('Localidad', usuario.localidad, theme.textTheme.bodyLarge),
+              _infoRow(
+                'Edad',
+                usuario.edad.toString(),
+                theme.textTheme.bodyLarge,
+              ),
+              _infoRow(
+                'Localidad',
+                usuario.localidad,
+                theme.textTheme.bodyLarge,
+              ),
             ],
           ),
         ),
@@ -188,7 +208,10 @@ appBar: AppBar(
   }
 
   List<Widget> _buildRespuestaCards(
-      Map<String, String> respuestas, ThemeData theme, bool isDark) {
+    Map<String, String> respuestas,
+    ThemeData theme,
+    bool isDark,
+  ) {
     final colorPrimary = theme.colorScheme.primary;
 
     return respuestas.entries.toList().asMap().entries.map((entry) {
@@ -199,9 +222,10 @@ appBar: AppBar(
       final card = Container(
         margin: const EdgeInsets.symmetric(vertical: 8),
         decoration: BoxDecoration(
-          color: isDark
-              ? theme.colorScheme.surfaceVariant.withOpacity(0.4)
-              : theme.colorScheme.surface,
+          color:
+              isDark
+                  ? theme.colorScheme.surfaceVariant.withOpacity(0.4)
+                  : theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(14),
           boxShadow: [
             if (!isDark)
@@ -227,8 +251,11 @@ appBar: AppBar(
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.check_circle_outline,
-                    size: 22, color: colorPrimary.withOpacity(0.8)),
+                Icon(
+                  Icons.check_circle_outline,
+                  size: 22,
+                  color: colorPrimary.withOpacity(0.8),
+                ),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(

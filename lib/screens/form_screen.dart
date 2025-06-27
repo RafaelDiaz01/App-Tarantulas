@@ -72,8 +72,10 @@ class _FormScreenState extends State<FormScreen>
     if (_numHijosController.text.isNotEmpty) llenos++;
 
     final progreso = llenos / totalCampos;
-    _animation = Tween<double>(begin: _animation.value, end: progreso)
-        .animate(_controller);
+    _animation = Tween<double>(
+      begin: _animation.value,
+      end: progreso,
+    ).animate(_controller);
     _controller
       ..reset()
       ..forward();
@@ -107,16 +109,14 @@ class _FormScreenState extends State<FormScreen>
     await box.add(nuevoUsuario);
 
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Usuario guardado con éxito')),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(const SnackBar(content: Text('Usuario guardado con éxito')));
 
     // Navega a la encuesta con el usuario recién creado
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(
-        builder: (_) => EncuestaScreen(usuario: nuevoUsuario),
-      ),
+      MaterialPageRoute(builder: (_) => EncuestaScreen(usuario: nuevoUsuario)),
     );
   }
 
@@ -137,34 +137,38 @@ class _FormScreenState extends State<FormScreen>
   }
 
   Widget _buildSectionTitle(String title) => Padding(
-        padding: const EdgeInsets.symmetric(vertical: 12.0),
-        child: Text(
-          title,
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Theme.of(context).colorScheme.primary,
-          ),
-        ),
-      );
+    padding: const EdgeInsets.symmetric(vertical: 12.0),
+    child: Text(
+      title,
+      style: TextStyle(
+        fontSize: 18,
+        fontWeight: FontWeight.bold,
+        color: Theme.of(context).colorScheme.primary,
+      ),
+    ),
+  );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Registro", style: Theme.of(context).textTheme.titleMedium?.copyWith(),
+        title: Text(
+          "Registro",
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(),
         ),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(4),
           child: AnimatedBuilder(
             animation: _animation,
-            builder: (_, __) => LinearProgressIndicator(
-              value: _animation.value,
-              backgroundColor: Colors.white.withOpacity(0.2),
-              valueColor:
-                  AlwaysStoppedAnimation(Theme.of(context).colorScheme.onPrimary),
-              minHeight: 4,
-            ),
+            builder:
+                (_, __) => LinearProgressIndicator(
+                  value: _animation.value,
+                  backgroundColor: Colors.white.withOpacity(0.2),
+                  valueColor: AlwaysStoppedAnimation(
+                    Theme.of(context).colorScheme.onPrimary,
+                  ),
+                  minHeight: 4,
+                ),
           ),
         ),
       ),
@@ -216,9 +220,21 @@ class _FormScreenState extends State<FormScreen>
                   ),
                 ),
                 validator: (v) => v == null ? 'Requerido' : null,
-                items: ['Masculino', 'Femenino', 'Otro']
-                    .map((s) => DropdownMenuItem(value: s, child: Text(s)))
-                    .toList(),
+                items:
+                    ['Masculino', 'Femenino', 'Otro']
+                        .map(
+                          (s) => DropdownMenuItem(
+                            value: s,
+                            child: Text(
+                              s,
+                              style:
+                                  Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium, // Aquí aplicas el estilo
+                            ),
+                          ),
+                        )
+                        .toList(),
                 onChanged: (v) {
                   setState(() {
                     _sexo = v;
@@ -228,9 +244,10 @@ class _FormScreenState extends State<FormScreen>
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                value: _estadoCivilController.text.isEmpty
-                    ? null
-                    : _estadoCivilController.text,
+                value:
+                    _estadoCivilController.text.isEmpty
+                        ? null
+                        : _estadoCivilController.text,
                 decoration: const InputDecoration(
                   labelText: 'Estado civil',
                   border: OutlineInputBorder(
@@ -238,15 +255,24 @@ class _FormScreenState extends State<FormScreen>
                   ),
                 ),
                 validator: (v) => v == null ? 'Requerido' : null,
-                items: [
-                  'Soltero/a',
-                  'Casado/a',
-                  'Divorciado/a',
-                  'Viudo/a',
-                  'Unión civil o de hecho',
-                ]
-                    .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                    .toList(),
+                items:
+                    [
+                          'Soltero/a',
+                          'Casado/a',
+                          'Divorciado/a',
+                          'Viudo/a',
+                          'Unión civil o de hecho',
+                        ]
+                        .map(
+                          (e) => DropdownMenuItem(
+                            value: e,
+                            child: Text(
+                              e,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ),
+                        )
+                        .toList(),
                 onChanged: (v) {
                   setState(() {
                     _estadoCivilController.text = v!;
@@ -288,15 +314,24 @@ class _FormScreenState extends State<FormScreen>
                   ),
                 ),
                 validator: (v) => v == null ? 'Requerido' : null,
-                items: [
-                  'Primaria',
-                  'Secundaria',
-                  'Preparatoria',
-                  'Universidad',
-                  'Ninguno',
-                ]
-                    .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                    .toList(),
+                items:
+                    [
+                          'Primaria',
+                          'Secundaria',
+                          'Preparatoria',
+                          'Universidad',
+                          'Ninguno',
+                        ]
+                        .map(
+                          (e) => DropdownMenuItem(
+                            value: e,
+                            child: Text(
+                              e,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ),
+                        )
+                        .toList(),
                 onChanged: (v) {
                   setState(() {
                     _nivelEstudios = v;
@@ -340,9 +375,10 @@ class _FormScreenState extends State<FormScreen>
               ),
               const SizedBox(height: 16),
               DropdownButtonFormField<String>(
-                value: _tenenciaTierraController.text.isEmpty
-                    ? null
-                    : _tenenciaTierraController.text,
+                value:
+                    _tenenciaTierraController.text.isEmpty
+                        ? null
+                        : _tenenciaTierraController.text,
                 decoration: const InputDecoration(
                   labelText: 'Tenencia de la tierra',
                   border: OutlineInputBorder(
@@ -350,9 +386,18 @@ class _FormScreenState extends State<FormScreen>
                   ),
                 ),
                 validator: (v) => v == null ? 'Requerido' : null,
-                items: ['Comunal', 'Privada']
-                    .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-                    .toList(),
+                items:
+                    ['Comunal', 'Privada']
+                        .map(
+                          (e) => DropdownMenuItem(
+                            value: e,
+                            child: Text(
+                              e,
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ),
+                        )
+                        .toList(),
                 onChanged: (v) {
                   setState(() {
                     _tenenciaTierraController.text = v!;
@@ -380,8 +425,10 @@ class _FormScreenState extends State<FormScreen>
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.primary,
                   foregroundColor: Colors.white,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 12,
+                  ),
                 ),
               ),
             ],
