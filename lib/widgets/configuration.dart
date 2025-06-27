@@ -57,23 +57,24 @@ class Configuration extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.info_outline),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder:
-                            (context) => Scaffold(
-                              appBar: AppBar(
-                                title: Text(
-                                  "Acerca de",
-                                  style:
-                                      Theme.of(
-                                        context,
-                                      ).textTheme.titleMedium?.copyWith(),
-                                ),
-                              ),
-                              body: SingleChildScrollView(child: About()),
+                    showDialog(
+                      context: context,
+                      builder:
+                          (context) => AlertDialog(
+                            title: const Text('Acerca de'),
+                            content: SizedBox(
+                              width: double.maxFinite,
+                              // Ajusta la altura máxima según lo que necesites
+                              height: 400,
+                              child: SingleChildScrollView(child: About()),
                             ),
-                      ),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text('Cerrar'),
+                              ),
+                            ],
+                          ),
                     );
                   },
                 ),

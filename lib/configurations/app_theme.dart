@@ -28,3 +28,29 @@ final appTheme = ThemeData().copyWith(
   colorScheme: appColorScheme,
   textTheme: appTextTheme,
 );
+
+final appThemeLight = ThemeData(
+  brightness: Brightness.light,
+  scaffoldBackgroundColor: const Color.fromARGB(255, 169, 214, 229),
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: Colors.blue,
+    brightness: Brightness.light,
+  ),
+  textTheme: appTextTheme.apply(
+    bodyColor: Colors.black,
+    displayColor: Colors.black,
+  ),
+);
+
+final appThemeDark = ThemeData(
+  brightness: Brightness.dark,
+  scaffoldBackgroundColor: const Color.fromARGB(255, 1, 73, 124),
+  colorScheme: ColorScheme.fromSeed(
+    seedColor: Colors.blue,
+    brightness: Brightness.dark,
+  ),
+  textTheme: appTextTheme.apply(
+    bodyColor: Colors.white,
+    displayColor: Colors.white,
+  ),
+);
