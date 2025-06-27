@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:app_tarantulas/widgets/configuration.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:app_tarantulas/screens/form_screen.dart'; // Asegúrate de que la ruta sea correcta
+import 'package:app_tarantulas/screens/form_screen.dart';
+import 'package:app_tarantulas/configurations/app_theme.dart'; // Asegúrate de que la ruta sea correcta
 
 class MyHomeScreen extends StatelessWidget {
   final String title;
@@ -31,7 +32,7 @@ class MyHomeScreen extends StatelessWidget {
         children: [
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -45,26 +46,24 @@ class MyHomeScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           Text(
-                            'Protege a las tarántulas',
-                            style: Theme.of(context).textTheme.titleLarge,
+                            'codeTapp',
+                            style: appTextName.titleLarge,
                             textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 6),
+                          const SizedBox(height: 15),
                           Text(
                             'Universidad de la Sierra Juárez',
                             style: Theme.of(
                               context,
                             ).textTheme.titleMedium?.copyWith(
-                              fontStyle: FontStyle.italic,
-                              color: Colors.black,
                             ),
                             textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 60),
+                          const SizedBox(height: 70),
                           Center(
                             child: SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.6,
-                              height: MediaQuery.of(context).size.height * 0.2,
+                              width: MediaQuery.of(context).size.width * 0.7,
+                              height: MediaQuery.of(context).size.height * 0.3,
                               child: Lottie.asset(
                                 'assets/animations/tarantula.json',
                                 fit: BoxFit.contain,
@@ -76,7 +75,7 @@ class MyHomeScreen extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      "Contesta esta breve encuesta y contribuye a la preservación de las tarántulas",
+                      "Responde esta breve encuesta y contribuye a la preservación de las tarántulas",
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         fontStyle: FontStyle.italic,
                       ),
@@ -96,7 +95,7 @@ class MyHomeScreen extends StatelessWidget {
                             );
                           },
                           icon: const Icon(FontAwesomeIcons.spider),
-                          label: const Text('Iniciar encuesta'),
+                          label: const Text('Iniciar'),
                         ),
                       ),
                     ),
