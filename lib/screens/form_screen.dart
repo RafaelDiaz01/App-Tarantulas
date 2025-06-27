@@ -232,9 +232,10 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                       flex: 2,
                       child: TextFormField(
                         controller: _nombreController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Nombre',
-                          border: OutlineInputBorder(
+                          labelStyle: Theme.of(context).textTheme.bodySmall,
+                          border: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(16)),
                           ),
                         ),
@@ -245,9 +246,10 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                     Expanded(
                       child: TextFormField(
                         controller: _edadController,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Edad',
-                          border: OutlineInputBorder(
+                          labelStyle: Theme.of(context).textTheme.bodySmall,
+                          border: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(16)),
                           ),
                         ),
@@ -264,9 +266,10 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                       child: DropdownButtonFormField<String>(
                         value: _sexo,
                         dropdownColor: Theme.of(context).colorScheme.background,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Sexo',
-                          border: OutlineInputBorder(
+                          labelStyle: Theme.of(context).textTheme.bodySmall,
+                          border: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(16)),
                           ),
                         ),
@@ -278,13 +281,8 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                                     value: sexo,
                                     child: Text(
                                       sexo,
-                                      style: Theme.of(
-                                        context,
-                                      ).textTheme.bodyMedium?.copyWith(
-                                        color:
-                                            Theme.of(
-                                              context,
-                                            ).colorScheme.secondary,
+                                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                        color: Theme.of(context).colorScheme.secondary,
                                       ),
                                     ),
                                   ),
@@ -300,7 +298,7 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                     ),
                   ],
                 ),
-                const SizedBox(height: 16), // <-- Espaciado después de Sexo
+                const SizedBox(height: 16), 
                 Row(
                   children: [
                     Expanded(
@@ -310,9 +308,10 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                                 ? null
                                 : _estadoCivilController.text,
                         dropdownColor: Theme.of(context).colorScheme.background,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           labelText: 'Estado civil',
-                          border: OutlineInputBorder(
+                          labelStyle: Theme.of(context).textTheme.bodySmall,
+                          border: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(16)),
                           ),
                         ),
@@ -330,9 +329,7 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                                     value: estado,
                                     child: Text(
                                       estado,
-                                      style: Theme.of(
-                                        context,
-                                      ).textTheme.bodyMedium?.copyWith(
+                                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                                         color: Theme.of(context).colorScheme.secondary,
                                       ),
                                     ),
@@ -354,9 +351,10 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                 _buildSectionTitle('UBICACIÓN Y ORIGEN'),
                 TextFormField(
                   controller: _localidadController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Localidad',
-                    border: OutlineInputBorder(
+                    labelStyle: Theme.of(context).textTheme.bodySmall,
+                    border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(16)),
                     ),
                   ),
@@ -365,9 +363,10 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _lugarOrigenController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Lugar de origen',
-                    border: OutlineInputBorder(
+                    labelStyle: Theme.of(context).textTheme.bodySmall,
+                    border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(16)),
                     ),
                   ),
@@ -378,9 +377,10 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                 DropdownButtonFormField<String>(
                   value: _nivelEstudios,
                   dropdownColor: Theme.of(context).colorScheme.background,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Escolaridad',
-                    border: OutlineInputBorder(
+                    labelStyle: Theme.of(context).textTheme.bodySmall,
+                    border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(16)),
                     ),
                   ),
@@ -414,9 +414,10 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                 SizedBox(height: 16),
                 TextFormField(
                   controller: _fuenteTrabajoController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Fuente principal de trabajo',
-                    border: OutlineInputBorder(
+                    labelStyle: Theme.of(context).textTheme.bodySmall,
+                    border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(16)),
                     ),
                   ),
@@ -427,9 +428,10 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                 _buildSectionTitle('CULTURA Y FAMILIA'),
                 TextFormField(
                   controller: _lenguaController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Lengua materna',
-                    border: OutlineInputBorder(
+                    labelStyle: Theme.of(context).textTheme.bodySmall,
+                    border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(16)),
                     ),
                   ),
@@ -438,9 +440,10 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                 SizedBox(height: 16),
                 TextFormField(
                   controller: _grupoEtnicoController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Grupo étnico',
-                    border: OutlineInputBorder(
+                    labelStyle: Theme.of(context).textTheme.bodySmall,
+                    border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(16)),
                     ),
                   ),
@@ -454,9 +457,10 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                           ? null
                           : _tenenciaTierraController.text,
                   dropdownColor: Theme.of(context).colorScheme.background,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Tenencia de la tierra',
-                    border: OutlineInputBorder(
+                    labelStyle: Theme.of(context).textTheme.bodySmall,
+                    border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(16)),
                     ),
                   ),
@@ -484,9 +488,10 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                 SizedBox(height: 16),
                 TextFormField(
                   controller: _numHijosController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Número de hijos',
-                    border: OutlineInputBorder(
+                    labelStyle: Theme.of(context).textTheme.bodySmall,
+                    border: const OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(16)),
                     ),
                   ),
@@ -513,7 +518,7 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                   icon: const Icon(Icons.picture_as_pdf),
                   label: const Text('Generar y Compartir PDF'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: appColorScheme.secondary,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24,
