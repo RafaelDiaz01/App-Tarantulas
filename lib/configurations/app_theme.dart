@@ -10,15 +10,15 @@ final appTextTheme = GoogleFonts.inconsolataTextTheme().copyWith(
   ),
   bodyMedium: GoogleFonts.inconsolata(
     fontWeight: FontWeight.normal,
-    fontSize: 20,
+    fontSize: 16,
   ),
   bodyLarge: GoogleFonts.inconsolata(
     fontWeight: FontWeight.normal,
-    fontSize: 25,
+    fontSize: 18,
   ),
   titleLarge: GoogleFonts.inconsolata(
     fontWeight: FontWeight.bold,
-    fontSize: 50,
+    fontSize: 60,
   ),
   titleMedium: GoogleFonts.inconsolata(
     fontWeight: FontWeight.bold,

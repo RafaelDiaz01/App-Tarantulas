@@ -60,6 +60,26 @@ class _EncuestaScreenState extends State<EncuestaScreen>
     return opciones == null || opciones.isEmpty;
   }
 
+  bool _debeMostrarPregunta(int index) {
+    final pregunta = preguntasEncuesta[index];
+
+    if (!pregunta.containsKey('mostrarSiRespuesta')) {
+      return true; // Sin condición, siempre mostrar
+    }
+
+    final condicion = pregunta['mostrarSiRespuesta'] as Map<String, dynamic>;
+    final preguntaPrevia = condicion['preguntaPrevia'] as String;
+    final valoresPermitidos = List<String>.from(condicion['valoresPermitidos']);
+
+    final respuestaPrevia = _respuestas[preguntaPrevia];
+
+    if (respuestaPrevia == null) {
+      return false; // No respondida, no mostrar
+    }
+
+    return valoresPermitidos.contains(respuestaPrevia);
+  }
+
   Future<void> _siguiente() async {
     if (_guardando) return;
     _guardando = true;
@@ -105,9 +125,15 @@ class _EncuestaScreenState extends State<EncuestaScreen>
       _textoRespuesta = '';
     }
 
-    if (_currentIndex < preguntasEncuesta.length - 1) {
+    int siguienteIndex = _currentIndex + 1;
+    while (siguienteIndex < preguntasEncuesta.length &&
+        !_debeMostrarPregunta(siguienteIndex)) {
+      siguienteIndex++;
+    }
+
+    if (siguienteIndex < preguntasEncuesta.length) {
       setState(() {
-        _currentIndex++;
+        _currentIndex = siguienteIndex;
         _controller.reset();
         _controller.forward();
       });
@@ -118,6 +144,30 @@ class _EncuestaScreenState extends State<EncuestaScreen>
     }
 
     _guardando = false;
+  }
+
+  void _anterior() {
+    if (_mostrarComentario) {
+      setState(() {
+        _mostrarComentario = false;
+      });
+      return;
+    }
+
+    int anteriorIndex = _currentIndex - 1;
+    while (anteriorIndex >= 0 && !_debeMostrarPregunta(anteriorIndex)) {
+      anteriorIndex--;
+    }
+
+    if (anteriorIndex >= 0) {
+      setState(() {
+        _currentIndex = anteriorIndex;
+        _opcionConDetalleSeleccionada = null;
+        _detalleController.clear();
+        _respuestaAbiertaController.clear();
+        _textoRespuesta = '';
+      });
+    }
   }
 
   Future<void> _finalizarEncuesta() async {
@@ -163,23 +213,10 @@ class _EncuestaScreenState extends State<EncuestaScreen>
 
     return Scaffold(
       appBar: AppBar(
-        leading: _currentIndex > 0 || _mostrarComentario
+        leading: (_currentIndex > 0 || _mostrarComentario)
             ? IconButton(
                 icon: const Icon(Icons.arrow_back),
-                onPressed: () {
-                  setState(() {
-                    if (_mostrarComentario) {
-                      _mostrarComentario = false;
-                    } else {
-                      _currentIndex =
-                          (_currentIndex - 1).clamp(0, preguntasEncuesta.length - 1);
-                      _opcionConDetalleSeleccionada = null;
-                      _detalleController.clear();
-                      _respuestaAbiertaController.clear();
-                      _textoRespuesta = '';
-                    }
-                  });
-                },
+                onPressed: _anterior,
               )
             : null,
         title: Text(
