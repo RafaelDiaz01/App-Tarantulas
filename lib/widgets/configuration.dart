@@ -71,7 +71,7 @@ class Configuration extends StatelessWidget {
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context),
-                                child: const Text('Cerrar'),
+                                child: const Text('Cerrar'), 
                               ),
                             ],
                           ),
