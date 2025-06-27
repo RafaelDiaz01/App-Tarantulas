@@ -154,7 +154,6 @@ class _FormScreenState extends State<FormScreen>
       appBar: AppBar(
         title: Text("Registro", style: Theme.of(context).textTheme.titleMedium?.copyWith(),
         ),
-        backgroundColor: Theme.of(context).colorScheme.primary,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(4),
           child: AnimatedBuilder(

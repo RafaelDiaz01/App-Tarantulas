@@ -25,7 +25,6 @@ appBar: AppBar(
     'Resultados',
     style: theme.textTheme.titleMedium,
   ),
-  backgroundColor: theme.colorScheme.primary,
   elevation: 4,
   shadowColor: theme.colorScheme.primary.withOpacity(0.5),
   actions: [
