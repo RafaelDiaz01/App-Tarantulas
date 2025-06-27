@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:app_tarantulas/widgets/about.dart';
 
 class Configuration extends StatelessWidget {
   final VoidCallback? onToggleTheme;
@@ -50,12 +51,12 @@ class Configuration extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             const Divider(),
-            // Sección 2: Otro ejemplo de sección
+            // Sección 2: Acerca de 
             Row(
               children: [
                 IconButton(
                   icon: const Icon(Icons.info_outline),
-                  onPressed: (){},
+                  onPressed: About.new,
                 ),
                 const SizedBox(width: 10),
                 Column(
