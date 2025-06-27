@@ -152,7 +152,10 @@ class _FormScreenState extends State<FormScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Formulario'),
+        title: Text(
+          "Configuraciones",
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(),
+        ),
         backgroundColor: appColorScheme.primary,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(4),
