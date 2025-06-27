@@ -18,20 +18,6 @@ class MyHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(title),
-        leading: IconButton(
-          icon: const Icon(Icons.settings),
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => Configuration(onToggleTheme: onToggleTheme),
-              ),
-            );
-          },
-        ),
-      ),
       body: Stack(
         children: [
           SafeArea(
