@@ -1,5 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:app_tarantulas/models/usuario_model.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:app_tarantulas/utils/pdf_generator.dart';
 
 class ResultadosScreen extends StatelessWidget {
   final Usuario usuario;
@@ -20,33 +24,29 @@ class ResultadosScreen extends StatelessWidget {
       ..remove(comentarioFinalEntry.key);
 
     return Scaffold(
-appBar: AppBar(
-  title: Text(
-    'Resultados',
-    style: theme.textTheme.titleMedium,
-  ),
-  backgroundColor: theme.colorScheme.primary,
-  elevation: 4,
-  shadowColor: theme.colorScheme.primary.withOpacity(0.5),
-  actions: [
-    IconButton(
-      tooltip: 'Exportar PDF',
-      icon: Icon(Icons.picture_as_pdf, color: theme.colorScheme.onPrimary),
-      onPressed: () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Exportar PDF... (pendiente)')),
-        );
-      },
-    ),
-    IconButton(
-      tooltip: 'Regresar al inicio',
-      icon: Icon(Icons.home, color: theme.colorScheme.onPrimary),
-      onPressed: () {
-        Navigator.popUntil(context, (route) => route.isFirst);
-      },
-    ),
-  ],
-),
+      appBar: AppBar(
+        title: Text(
+          'Resultados',
+          style: theme.textTheme.titleMedium,
+        ),
+        backgroundColor: theme.colorScheme.primary,
+        elevation: 4,
+        shadowColor: theme.colorScheme.primary.withOpacity(0.5),
+        actions: [
+          IconButton(
+            tooltip: 'Exportar PDF',
+            icon: Icon(Icons.picture_as_pdf, color: theme.colorScheme.onPrimary),
+            onPressed: () => _exportarPDF(context),
+          ),
+          IconButton(
+            tooltip: 'Regresar al inicio',
+            icon: Icon(Icons.home, color: theme.colorScheme.onPrimary),
+            onPressed: () {
+              Navigator.popUntil(context, (route) => route.isFirst);
+            },
+          ),
+        ],
+      ),
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
@@ -107,6 +107,29 @@ appBar: AppBar(
         ),
       ),
     );
+  }
+
+  Future<void> _exportarPDF(BuildContext context) async {
+    final respuestas = usuario.respuestas ?? {};
+    // Encuentra la clave del comentario final
+    final comentarioFinalEntry = respuestas.entries.firstWhere(
+      (e) => e.key.toLowerCase().contains('comentario'),
+      orElse: () => const MapEntry('', ''),
+    );
+    // Elimina solo el comentario final
+    final respuestasSinComentario = Map.of(respuestas)
+      ..remove(comentarioFinalEntry.key);
+
+    final pdfBytes = await PdfGenerator.generateFromResultados(
+      usuario: usuario,
+      respuestas: respuestasSinComentario, // <-- Ahora sí, todas las respuestas menos el comentario final
+    );
+
+    final output = await getTemporaryDirectory();
+    final file = File('${output.path}/reporte_resultados.pdf');
+    await file.writeAsBytes(pdfBytes);
+
+    await Share.shareXFiles([XFile(file.path)], text: 'Te comparto el PDF de resultados.');
   }
 
   Widget _buildUsuarioHeader(ThemeData theme) {
