@@ -1,5 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:app_tarantulas/models/usuario_model.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:app_tarantulas/utils/pdf_generator.dart';
 
 class ResultadosScreen extends StatelessWidget {
   final Usuario usuario;
@@ -106,6 +110,29 @@ appBar: AppBar(
         ),
       ),
     );
+  }
+
+  Future<void> _exportarPDF(BuildContext context) async {
+    final respuestas = usuario.respuestas ?? {};
+    // Encuentra la clave del comentario final
+    final comentarioFinalEntry = respuestas.entries.firstWhere(
+      (e) => e.key.toLowerCase().contains('comentario'),
+      orElse: () => const MapEntry('', ''),
+    );
+    // Elimina solo el comentario final
+    final respuestasSinComentario = Map.of(respuestas)
+      ..remove(comentarioFinalEntry.key);
+
+    final pdfBytes = await PdfGenerator.generateFromResultados(
+      usuario: usuario,
+      respuestas: respuestasSinComentario, // <-- Ahora sí, todas las respuestas menos el comentario final
+    );
+
+    final output = await getTemporaryDirectory();
+    final file = File('${output.path}/reporte_resultados.pdf');
+    await file.writeAsBytes(pdfBytes);
+
+    await Share.shareXFiles([XFile(file.path)], text: 'Te comparto el PDF de resultados.');
   }
 
   Widget _buildUsuarioHeader(ThemeData theme) {
