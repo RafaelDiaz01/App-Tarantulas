@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import '../configurations/app_theme.dart'; // Importa los temas  
+import 'package:uuid/uuid.dart';
+import 'package:hive/hive.dart';
+import '../models/usuario_model.dart';
+import '../configurations/app_theme.dart';
 
-// Define el color azul claro que quieres usar (puedes usar uno del tema o definir uno aquí)
-final Color azulClaro = const Color(0xFF42A5F5); // Azul claro, puedes cambiarlo
+final Color azulClaro = const Color(0xFF42A5F5);
 
 class FormScreen extends StatefulWidget {
   const FormScreen({super.key});
@@ -13,27 +15,25 @@ class FormScreen extends StatefulWidget {
 
 class _FormScreenState extends State<FormScreen>
     with SingleTickerProviderStateMixin {
+  final _formKey = GlobalKey<FormState>();
   late AnimationController _controller;
   late Animation<double> _animation;
 
   // Controladores y valores
-  final _fechaController = TextEditingController();
   final _localidadController = TextEditingController();
   final _nombreController = TextEditingController();
   final _edadController = TextEditingController();
   String? _sexo;
   final _lenguaController = TextEditingController();
   final _grupoEtnicoController = TextEditingController();
-  final _nivelEstudiosController = TextEditingController();
+  String? _nivelEstudios;
   final _fuenteTrabajoController = TextEditingController();
-  final _escolaridadController = TextEditingController();
   final _tenenciaTierraController = TextEditingController();
   final _estadoCivilController = TextEditingController();
   final _lugarOrigenController = TextEditingController();
   final _numHijosController = TextEditingController();
 
-  // Total de campos requeridos para el progreso
-  final int totalCampos = 13;
+  final int totalCampos = 12;
 
   @override
   void initState() {
@@ -41,21 +41,18 @@ class _FormScreenState extends State<FormScreen>
 
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
     );
 
     _animation = Tween<double>(begin: 0, end: 0).animate(_controller);
 
-    _fechaController.addListener(_updateProgress);
+    // Escucha cambios para progreso
     _localidadController.addListener(_updateProgress);
     _nombreController.addListener(_updateProgress);
     _edadController.addListener(_updateProgress);
     _lenguaController.addListener(_updateProgress);
     _grupoEtnicoController.addListener(_updateProgress);
-    _nivelEstudiosController.addListener(_updateProgress);
     _fuenteTrabajoController.addListener(_updateProgress);
-    _escolaridadController.addListener(_updateProgress);
-    _tenenciaTierraController.addListener(_updateProgress);
     _estadoCivilController.addListener(_updateProgress);
     _lugarOrigenController.addListener(_updateProgress);
     _numHijosController.addListener(_updateProgress);
@@ -63,17 +60,14 @@ class _FormScreenState extends State<FormScreen>
 
   void _updateProgress() {
     int camposLlenos = 0;
-
-    if (_fechaController.text.isNotEmpty) camposLlenos++;
     if (_localidadController.text.isNotEmpty) camposLlenos++;
     if (_nombreController.text.isNotEmpty) camposLlenos++;
     if (_edadController.text.isNotEmpty) camposLlenos++;
     if (_sexo != null && _sexo!.isNotEmpty) camposLlenos++;
     if (_lenguaController.text.isNotEmpty) camposLlenos++;
     if (_grupoEtnicoController.text.isNotEmpty) camposLlenos++;
-    if (_nivelEstudiosController.text.isNotEmpty) camposLlenos++;
+    if (_nivelEstudios != null && _nivelEstudios!.isNotEmpty) camposLlenos++;
     if (_fuenteTrabajoController.text.isNotEmpty) camposLlenos++;
-    if (_escolaridadController.text.isNotEmpty) camposLlenos++;
     if (_tenenciaTierraController.text.isNotEmpty) camposLlenos++;
     if (_estadoCivilController.text.isNotEmpty) camposLlenos++;
     if (_lugarOrigenController.text.isNotEmpty) camposLlenos++;
@@ -91,18 +85,48 @@ class _FormScreenState extends State<FormScreen>
       ..forward();
   }
 
+  void _guardarUsuario() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    final box = await Hive.openBox<Usuario>('usuariosBox');
+    final uuid = Uuid();
+
+    final nuevoUsuario = Usuario(
+      id: uuid.v4(),
+      nombre: _nombreController.text,
+      edad: int.tryParse(_edadController.text) ?? 0,
+      sexo: _sexo!,
+      lenguaMaterna: _lenguaController.text,
+      grupoEtnico: _grupoEtnicoController.text,
+      fuenteTrabajo: _fuenteTrabajoController.text,
+      escolaridad: _nivelEstudios!,
+      tenenciaTierra: _tenenciaTierraController.text,
+      estadoCivil: _estadoCivilController.text,
+      lugarOrigen: _lugarOrigenController.text,
+      numeroHijos: int.tryParse(_numHijosController.text) ?? 0,
+      localidad: _localidadController.text,
+      fechaRegistro: DateTime.now(),
+    );
+
+    await box.add(nuevoUsuario);
+
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Usuario guardado con éxito')),
+      );
+      Navigator.pop(context);
+    }
+  }
+
   @override
   void dispose() {
     _controller.dispose();
-    _fechaController.dispose();
     _localidadController.dispose();
     _nombreController.dispose();
     _edadController.dispose();
     _lenguaController.dispose();
     _grupoEtnicoController.dispose();
-    _nivelEstudiosController.dispose();
     _fuenteTrabajoController.dispose();
-    _escolaridadController.dispose();
     _tenenciaTierraController.dispose();
     _estadoCivilController.dispose();
     _lugarOrigenController.dispose();
@@ -110,22 +134,6 @@ class _FormScreenState extends State<FormScreen>
     super.dispose();
   }
 
-  Widget buildProgressBar() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 16.0),
-      child: AnimatedBuilder(
-        animation: _animation,
-        builder:
-            (context, child) => LinearProgressIndicator(
-              value: _animation.value,
-              backgroundColor: const Color.fromARGB(255, 211, 26, 26),
-              valueColor: AlwaysStoppedAnimation<Color>(appColorScheme.primary),
-            ),
-      ),
-    );
-  }
-
-  // Helper para los títulos de sección
   Widget _buildSectionTitle(String title) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12.0),
@@ -144,204 +152,169 @@ class _FormScreenState extends State<FormScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Formulario'),
+        title: Text(
+          "Configuraciones",
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(),
+        ),
         backgroundColor: appColorScheme.primary,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(4),
           child: AnimatedBuilder(
             animation: _animation,
-            builder:
-                (context, child) => LinearProgressIndicator(
-                  value: _animation.value,
-                  backgroundColor: Colors.white.withOpacity(0.2),
-                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                  minHeight: 4,
-                ),
+            builder: (context, child) => LinearProgressIndicator(
+              value: _animation.value,
+              backgroundColor: Colors.white.withOpacity(0.2),
+              valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+              minHeight: 4,
+            ),
           ),
         ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: [
-              //buildProgressBar(),
-              _buildSectionTitle('DATOS PERSONALES'),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: TextField(
-                      controller: _nombreController,
-                      decoration: InputDecoration(labelText: 'Nombre'),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                _buildSectionTitle('DATOS PERSONALES'),
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 2,
+                      child: TextFormField(
+                        controller: _nombreController,
+                        decoration: const InputDecoration(labelText: 'Nombre'),
+                        validator: (v) => v!.isEmpty ? 'Requerido' : null,
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: TextField(
-                      controller: _edadController,
-                      decoration: InputDecoration(labelText: 'Edad'),
-                      keyboardType: TextInputType.number,
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: TextFormField(
+                        controller: _edadController,
+                        decoration: const InputDecoration(labelText: 'Edad'),
+                        keyboardType: TextInputType.number,
+                        validator: (v) => v!.isEmpty ? 'Requerido' : null,
+                      ),
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    child: DropdownButtonFormField<String>(
-                      value: _sexo,
-                      dropdownColor: appColorScheme.background,
-                      decoration: InputDecoration(labelText: 'Sexo'),
-                      items:
-                          ['Masculino', 'Femenino', 'Otro']
-                              .map(
-                                (sexo) => DropdownMenuItem(
-                                  value: sexo,
-                                  child: Text(
-                                    sexo,
-                                    style: TextStyle(
-                                      color: azulClaro,
-                                    ), // Cambia el color aquí
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          _sexo = value;
-                          _updateProgress();
-                        });
-                      },
-                    ),
-                  ),
-                  SizedBox(width: 8),
-                  Expanded(
-                    child: TextField(
-                      controller: _estadoCivilController,
-                      decoration: InputDecoration(labelText: 'Estado civil'),
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: 16),
-              _buildSectionTitle('UBICACIÓN Y ORIGEN'),
-              TextField(
-                controller: _localidadController,
-                decoration: InputDecoration(labelText: 'Localidad'),
-              ),
-              TextField(
-                controller: _lugarOrigenController,
-                decoration: InputDecoration(labelText: 'Lugar de origen'),
-              ),
-
-              const SizedBox(height: 16),
-              _buildSectionTitle('EDUCACIÓN Y TRABAJO'),
-              DropdownButtonFormField<String>(
-                value:
-                    _nivelEstudiosController.text.isEmpty
-                        ? null
-                        : _nivelEstudiosController.text,
-                dropdownColor: appColorScheme.background,
-                decoration: InputDecoration(labelText: 'Escolaridad'),
-                items:
-                    [
-                          'Primaria',
-                          'Secundaria',
-                          'Preparatoria',
-                          'Universidad',
-                          'Ninguno',
-                        ]
-                        .map(
-                          (nivel) => DropdownMenuItem(
-                            value: nivel,
-                            child: Text(nivel),
-                          ),
-                        )
-                        .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _nivelEstudiosController.text = value!;
-                    _updateProgress();
-                  });
-                },
-              ),
-              TextField(
-                controller: _fuenteTrabajoController,
-                decoration: InputDecoration(
-                  labelText: 'Fuente principal de trabajo',
+                  ],
                 ),
-              ),
-
-              const SizedBox(height: 16),
-              _buildSectionTitle('CULTURA Y FAMILIA'),
-              TextField(
-                controller: _lenguaController,
-                decoration: InputDecoration(labelText: 'Lengua materna'),
-              ),
-              TextField(
-                controller: _grupoEtnicoController,
-                decoration: InputDecoration(labelText: 'Grupo étnico'),
-              ),
-              DropdownButtonFormField<String>(
-                value:
-                    _tenenciaTierraController.text.isEmpty
-                        ? null
-                        : _tenenciaTierraController.text,
-                dropdownColor: appColorScheme.background,
-
-                decoration: InputDecoration(
-                  labelText: 'Tenencia de la tierra (comunal, privada)',
+                Row(
+                  children: [
+                    Expanded(
+                      child: DropdownButtonFormField<String>(
+                        value: _sexo,
+                        dropdownColor: appColorScheme.background,
+                        decoration: const InputDecoration(labelText: 'Sexo'),
+                        validator: (v) => v == null ? 'Requerido' : null,
+                        items: ['Masculino', 'Femenino', 'Otro']
+                            .map(
+                              (sexo) => DropdownMenuItem(
+                                value: sexo,
+                                child: Text(sexo, style: TextStyle(color: azulClaro)),
+                              ),
+                            )
+                            .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            _sexo = value;
+                            _updateProgress();
+                          });
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: TextFormField(
+                        controller: _estadoCivilController,
+                        decoration: const InputDecoration(labelText: 'Estado civil'),
+                        validator: (v) => v!.isEmpty ? 'Requerido' : null,
+                      ),
+                    ),
+                  ],
                 ),
-                items:
-                    ['Comunal', 'Privada']
-                        .map(
-                          (opcion) => DropdownMenuItem(
-                            value: opcion,
-                            child: Text(
-                              opcion,
-                              style: TextStyle(color: azulClaro), // Mismo color
-                            ),
-                          ),
-                        )
-                        .toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _tenenciaTierraController.text = value!;
-                    _updateProgress();
-                  });
-                },
-              ),
-              TextField(
-                controller: _numHijosController,
-                decoration: InputDecoration(labelText: 'Número de hijos'),
-                keyboardType: TextInputType.number,
-              ),
-
-              const SizedBox(height: 16),
-              _buildSectionTitle('FECHA DE LLENADO'),
-              TextField(
-                controller: _fechaController,
-                readOnly: true,
-                onTap: () async {
-                  DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(1900),
-                    lastDate: DateTime(2100),
-                  );
-                  if (pickedDate != null) {
-                    _fechaController.text =
-                        pickedDate.toIso8601String().split('T').first;
-                  }
-                },
-                decoration: InputDecoration(
-                  labelText: 'Selecciona la fecha',
-                  suffixIcon: Icon(Icons.calendar_today),
+                const SizedBox(height: 16),
+                _buildSectionTitle('UBICACIÓN Y ORIGEN'),
+                TextFormField(
+                  controller: _localidadController,
+                  decoration: const InputDecoration(labelText: 'Localidad'),
+                  validator: (v) => v!.isEmpty ? 'Requerido' : null,
                 ),
-              ),
-            ],
+                TextFormField(
+                  controller: _lugarOrigenController,
+                  decoration: const InputDecoration(labelText: 'Lugar de origen'),
+                  validator: (v) => v!.isEmpty ? 'Requerido': null,
+                ),
+                const SizedBox(height: 16),
+                _buildSectionTitle('EDUCACIÓN Y TRABAJO'),
+                DropdownButtonFormField<String>(
+                  value: _nivelEstudios,
+                  dropdownColor: appColorScheme.background,
+                  decoration: const InputDecoration(labelText: 'Escolaridad'),
+                  validator: (v) => v == null ? 'Requerido' : null,
+                  items: [
+                    'Primaria',
+                    'Secundaria',
+                    'Preparatoria',
+                    'Universidad',
+                    'Ninguno',
+                  ].map((nivel) => DropdownMenuItem(value: nivel, child: Text(nivel))).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _nivelEstudios = value;
+                      _updateProgress();
+                    });
+                  },
+                ),
+                TextFormField(
+                  controller: _fuenteTrabajoController,
+                  decoration: const InputDecoration(labelText: 'Fuente principal de trabajo'),
+                  validator: (v) => v!.isEmpty ? 'Requerido' : null,
+                ),
+                const SizedBox(height: 16),
+                _buildSectionTitle('CULTURA Y FAMILIA'),
+                TextFormField(
+                  controller: _lenguaController,
+                  decoration: const InputDecoration(labelText: 'Lengua materna'),
+                  validator: (v) => v!.isEmpty ? 'Requerido' : null,
+                ),
+                TextFormField(
+                  controller: _grupoEtnicoController,
+                  decoration: const InputDecoration(labelText: 'Grupo étnico'),
+                  validator: (v) => v!.isEmpty ? 'Requerido' : null,
+                ),
+                DropdownButtonFormField<String>(
+                  value: _tenenciaTierraController.text.isEmpty ? null : _tenenciaTierraController.text,
+                  dropdownColor: appColorScheme.background,
+                  decoration: const InputDecoration(labelText: 'Tenencia de la tierra'),
+                  validator: (v) => v == null ? 'Requerido' :null,
+                  items: ['Comunal', 'Privada'] .map((opcion) => DropdownMenuItem(value: opcion, child: Text(opcion, style: TextStyle(color: azulClaro)))).toList(),
+                  onChanged: (value) {
+                    setState(() {
+                      _tenenciaTierraController.text = value!;
+                      _updateProgress();
+                    });
+                  },
+                ),
+                TextFormField(
+                  controller: _numHijosController,
+                  decoration: const InputDecoration(labelText: 'Número de hijos'),
+                  keyboardType: TextInputType.number,
+                  validator: (v) => v!.isEmpty ? 'Requerido': null,
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton.icon(
+                  onPressed: _guardarUsuario,
+                  icon: const Icon(Icons.save),
+                  label: const Text('Guardar'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: appColorScheme.primary,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
