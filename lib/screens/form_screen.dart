@@ -4,8 +4,6 @@ import 'package:hive/hive.dart';
 import '../models/usuario_model.dart';
 import '../configurations/app_theme.dart';
 
-final Color azulClaro = const Color(0xFF42A5F5);
-
 class FormScreen extends StatefulWidget {
   const FormScreen({super.key});
 
@@ -161,12 +159,13 @@ class _FormScreenState extends State<FormScreen>
           preferredSize: const Size.fromHeight(4),
           child: AnimatedBuilder(
             animation: _animation,
-            builder: (context, child) => LinearProgressIndicator(
-              value: _animation.value,
-              backgroundColor: Colors.white.withOpacity(0.2),
-              valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
-              minHeight: 4,
-            ),
+            builder:
+                (context, child) => LinearProgressIndicator(
+                  value: _animation.value,
+                  backgroundColor: Colors.white.withOpacity(0.2),
+                  valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+                  minHeight: 4,
+                ),
           ),
         ),
       ),
@@ -184,7 +183,12 @@ class _FormScreenState extends State<FormScreen>
                       flex: 2,
                       child: TextFormField(
                         controller: _nombreController,
-                        decoration: const InputDecoration(labelText: 'Nombre'),
+                        decoration: const InputDecoration(
+                          labelText: 'Nombre',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(16)),
+                          ),
+                        ),
                         validator: (v) => v!.isEmpty ? 'Requerido' : null,
                       ),
                     ),
@@ -192,29 +196,48 @@ class _FormScreenState extends State<FormScreen>
                     Expanded(
                       child: TextFormField(
                         controller: _edadController,
-                        decoration: const InputDecoration(labelText: 'Edad'),
+                        decoration: const InputDecoration(
+                          labelText: 'Edad',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(16)),
+                          ),
+                        ),
                         keyboardType: TextInputType.number,
                         validator: (v) => v!.isEmpty ? 'Requerido' : null,
                       ),
                     ),
                   ],
                 ),
+                const SizedBox(height: 16),
                 Row(
                   children: [
                     Expanded(
                       child: DropdownButtonFormField<String>(
                         value: _sexo,
                         dropdownColor: appColorScheme.background,
-                        decoration: const InputDecoration(labelText: 'Sexo'),
+                        decoration: const InputDecoration(
+                          labelText: 'Sexo',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(16)),
+                          ),
+                        ),
                         validator: (v) => v == null ? 'Requerido' : null,
-                        items: ['Masculino', 'Femenino', 'Otro']
-                            .map(
-                              (sexo) => DropdownMenuItem(
-                                value: sexo,
-                                child: Text(sexo, style: TextStyle(color: azulClaro)),
-                              ),
-                            )
-                            .toList(),
+                        items:
+                            ['Masculino', 'Femenino', 'Otro']
+                                .map(
+                                  (sexo) => DropdownMenuItem(
+                                    value: sexo,
+                                    child: Text(
+                                      sexo,
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.bodyMedium?.copyWith(
+                                        color: appColorScheme.secondary,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
                         onChanged: (value) {
                           setState(() {
                             _sexo = value;
@@ -223,42 +246,112 @@ class _FormScreenState extends State<FormScreen>
                         },
                       ),
                     ),
-                    const SizedBox(width: 8),
+                  ],
+                ),
+                const SizedBox(height: 16), // <-- Espaciado después de Sexo
+                Row(
+                  children: [
                     Expanded(
-                      child: TextFormField(
-                        controller: _estadoCivilController,
-                        decoration: const InputDecoration(labelText: 'Estado civil'),
-                        validator: (v) => v!.isEmpty ? 'Requerido' : null,
+                      child: DropdownButtonFormField<String>(
+                        value:
+                            _estadoCivilController.text.isEmpty
+                                ? null
+                                : _estadoCivilController.text,
+                        dropdownColor: appColorScheme.background,
+                        decoration: const InputDecoration(
+                          labelText: 'Estado civil',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(16)),
+                          ),
+                        ),
+                        validator: (v) => v == null ? 'Requerido' : null,
+                        items:
+                            [
+                                  'Soltero/a',
+                                  'Casado/a',
+                                  'Divorciado/a',
+                                  'Viudo/a',
+                                  'Unión civil o de hecho',
+                                ]
+                                .map(
+                                  (estado) => DropdownMenuItem(
+                                    value: estado,
+                                    child: Text(
+                                      estado,
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.bodyMedium?.copyWith(
+                                        color: appColorScheme.secondary,
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            _estadoCivilController.text = value!;
+                            _updateProgress();
+                          });
+                        },
                       ),
                     ),
                   ],
                 ),
+
                 const SizedBox(height: 16),
                 _buildSectionTitle('UBICACIÓN Y ORIGEN'),
                 TextFormField(
                   controller: _localidadController,
-                  decoration: const InputDecoration(labelText: 'Localidad'),
+                  decoration: const InputDecoration(
+                    labelText: 'Localidad',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(16)),
+                    ),
+                  ),
                   validator: (v) => v!.isEmpty ? 'Requerido' : null,
                 ),
+                const SizedBox(height: 16),
                 TextFormField(
                   controller: _lugarOrigenController,
-                  decoration: const InputDecoration(labelText: 'Lugar de origen'),
-                  validator: (v) => v!.isEmpty ? 'Requerido': null,
+                  decoration: const InputDecoration(
+                    labelText: 'Lugar de origen',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(16)),
+                    ),
+                  ),
+                  validator: (v) => v!.isEmpty ? 'Requerido' : null,
                 ),
                 const SizedBox(height: 16),
                 _buildSectionTitle('EDUCACIÓN Y TRABAJO'),
                 DropdownButtonFormField<String>(
                   value: _nivelEstudios,
                   dropdownColor: appColorScheme.background,
-                  decoration: const InputDecoration(labelText: 'Escolaridad'),
+                  decoration: const InputDecoration(
+                    labelText: 'Escolaridad',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(16)),
+                    ),
+                  ),
                   validator: (v) => v == null ? 'Requerido' : null,
-                  items: [
-                    'Primaria',
-                    'Secundaria',
-                    'Preparatoria',
-                    'Universidad',
-                    'Ninguno',
-                  ].map((nivel) => DropdownMenuItem(value: nivel, child: Text(nivel))).toList(),
+                  items:
+                      [
+                            'Primaria',
+                            'Secundaria',
+                            'Preparatoria',
+                            'Universidad',
+                            'Ninguno',
+                          ]
+                          .map(
+                            (nivel) => DropdownMenuItem(
+                              value: nivel,
+                              child: Text(
+                                nivel,
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(color: appColorScheme.secondary),
+                              ),
+                            ),
+                          )
+                          .toList(),
                   onChanged: (value) {
                     setState(() {
                       _nivelEstudios = value;
@@ -266,29 +359,69 @@ class _FormScreenState extends State<FormScreen>
                     });
                   },
                 ),
+                SizedBox(height: 16),
                 TextFormField(
                   controller: _fuenteTrabajoController,
-                  decoration: const InputDecoration(labelText: 'Fuente principal de trabajo'),
+                  decoration: const InputDecoration(
+                    labelText: 'Fuente principal de trabajo',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(16)),
+                    ),
+                  ),
+
                   validator: (v) => v!.isEmpty ? 'Requerido' : null,
                 ),
                 const SizedBox(height: 16),
                 _buildSectionTitle('CULTURA Y FAMILIA'),
                 TextFormField(
                   controller: _lenguaController,
-                  decoration: const InputDecoration(labelText: 'Lengua materna'),
+                  decoration: const InputDecoration(
+                    labelText: 'Lengua materna',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(16)),
+                    ),
+                  ),
                   validator: (v) => v!.isEmpty ? 'Requerido' : null,
                 ),
+                SizedBox(height: 16),
                 TextFormField(
                   controller: _grupoEtnicoController,
-                  decoration: const InputDecoration(labelText: 'Grupo étnico'),
+                  decoration: const InputDecoration(
+                    labelText: 'Grupo étnico',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(16)),
+                    ),
+                  ),
+
                   validator: (v) => v!.isEmpty ? 'Requerido' : null,
                 ),
+                SizedBox(height: 16),
                 DropdownButtonFormField<String>(
-                  value: _tenenciaTierraController.text.isEmpty ? null : _tenenciaTierraController.text,
+                  value:
+                      _tenenciaTierraController.text.isEmpty
+                          ? null
+                          : _tenenciaTierraController.text,
                   dropdownColor: appColorScheme.background,
-                  decoration: const InputDecoration(labelText: 'Tenencia de la tierra'),
-                  validator: (v) => v == null ? 'Requerido' :null,
-                  items: ['Comunal', 'Privada'] .map((opcion) => DropdownMenuItem(value: opcion, child: Text(opcion, style: TextStyle(color: azulClaro)))).toList(),
+                  decoration: const InputDecoration(
+                    labelText: 'Tenencia de la tierra',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(16)),
+                    ),
+                  ),
+                  validator: (v) => v == null ? 'Requerido' : null,
+                  items:
+                      ['Comunal', 'Privada']
+                          .map(
+                            (opcion) => DropdownMenuItem(
+                              value: opcion,
+                              child: Text(
+                                opcion,
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(color: appColorScheme.secondary),
+                              ),
+                            ),
+                          )
+                          .toList(),
                   onChanged: (value) {
                     setState(() {
                       _tenenciaTierraController.text = value!;
@@ -296,11 +429,17 @@ class _FormScreenState extends State<FormScreen>
                     });
                   },
                 ),
+                SizedBox(height: 16),
                 TextFormField(
                   controller: _numHijosController,
-                  decoration: const InputDecoration(labelText: 'Número de hijos'),
+                  decoration: const InputDecoration(
+                    labelText: 'Número de hijos',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(16)),
+                    ),
+                  ),
                   keyboardType: TextInputType.number,
-                  validator: (v) => v!.isEmpty ? 'Requerido': null,
+                  validator: (v) => v!.isEmpty ? 'Requerido' : null,
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton.icon(
@@ -310,7 +449,10 @@ class _FormScreenState extends State<FormScreen>
                   style: ElevatedButton.styleFrom(
                     backgroundColor: appColorScheme.primary,
                     foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
                   ),
                 ),
               ],
