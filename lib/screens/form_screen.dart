@@ -1,15 +1,8 @@
-import 'dart:io';
-import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'package:hive/hive.dart';
 import '../models/usuario_model.dart';
-import '../screens/encuestaScreen.dart';
-
-final Color azulClaro = const Color(0xFF42A5F5);
+import '../configurations/app_theme.dart';
 
 class FormScreen extends StatefulWidget {
   const FormScreen({super.key});
@@ -119,50 +112,8 @@ class _FormScreenState extends State<FormScreen>
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Usuario guardado con éxito')),
       );
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => EncuestaScreen(usuario: nuevoUsuario),
-        ),
-      );
+      Navigator.pop(context);
     }
-  }
-
-  Future<void> _generateAndSharePDF() async {
-    final pdf = pw.Document();
-
-    pdf.addPage(
-      pw.Page(
-        build: (pw.Context context) {
-          return pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: [
-              pw.Text('Reporte de Usuario', style: pw.TextStyle(fontSize: 24)),
-              pw.SizedBox(height: 12),
-              pw.Text('Nombre: ${_nombreController.text}'),
-              pw.Text('Edad: ${_edadController.text}'),
-              pw.Text('Sexo: $_sexo'),
-              pw.Text('Estado Civil: ${_estadoCivilController.text}'),
-              pw.Text('Localidad: ${_localidadController.text}'),
-              pw.Text('Lugar de Origen: ${_lugarOrigenController.text}'),
-              pw.Text('Escolaridad: $_nivelEstudios'),
-              pw.Text('Fuente de Trabajo: ${_fuenteTrabajoController.text}'),
-              pw.Text('Lengua Materna: ${_lenguaController.text}'),
-              pw.Text('Grupo Étnico: ${_grupoEtnicoController.text}'),
-              pw.Text('Tenencia de Tierra: ${_tenenciaTierraController.text}'),
-              pw.Text('Número de Hijos: ${_numHijosController.text}'),
-            ],
-          );
-        },
-      ),
-    );
-
-    final output = await getTemporaryDirectory();
-    final file = File('${output.path}/reporte_usuario.pdf');
-    await file.writeAsBytes(await pdf.save());
-
-    await Share.shareXFiles([XFile(file.path)], text: 'Te comparto el PDF del formulario.');
   }
 
   @override
@@ -203,6 +154,7 @@ class _FormScreenState extends State<FormScreen>
           "Configuraciones",
           style: Theme.of(context).textTheme.titleMedium?.copyWith(),
         ),
+        backgroundColor: Theme.of(context).colorScheme.primary,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(4),
           child: AnimatedBuilder(
@@ -210,12 +162,8 @@ class _FormScreenState extends State<FormScreen>
             builder:
                 (context, child) => LinearProgressIndicator(
                   value: _animation.value,
-                  backgroundColor: Theme.of(
-                    context,
-                  ).colorScheme.surface.withOpacity(0.2),
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    Theme.of(context).colorScheme.primary,
-                  ),
+                  backgroundColor: Colors.white.withOpacity(0.2),
+                  valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
                   minHeight: 4,
                 ),
           ),
@@ -235,10 +183,9 @@ class _FormScreenState extends State<FormScreen>
                       flex: 2,
                       child: TextFormField(
                         controller: _nombreController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Nombre',
-                          labelStyle: Theme.of(context).textTheme.bodySmall,
-                          border: const OutlineInputBorder(
+                          border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(16)),
                           ),
                         ),
@@ -249,10 +196,9 @@ class _FormScreenState extends State<FormScreen>
                     Expanded(
                       child: TextFormField(
                         controller: _edadController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Edad',
-                          labelStyle: Theme.of(context).textTheme.bodySmall,
-                          border: const OutlineInputBorder(
+                          border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(16)),
                           ),
                         ),
@@ -269,10 +215,9 @@ class _FormScreenState extends State<FormScreen>
                       child: DropdownButtonFormField<String>(
                         value: _sexo,
                         dropdownColor: Theme.of(context).colorScheme.background,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Sexo',
-                          labelStyle: Theme.of(context).textTheme.bodySmall,
-                          border: const OutlineInputBorder(
+                          border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(16)),
                           ),
                         ),
@@ -284,8 +229,13 @@ class _FormScreenState extends State<FormScreen>
                                     value: sexo,
                                     child: Text(
                                       sexo,
-                                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                        color: Theme.of(context).colorScheme.secondary,
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.bodyMedium?.copyWith(
+                                        color:
+                                            Theme.of(
+                                              context,
+                                            ).colorScheme.secondary,
                                       ),
                                     ),
                                   ),
@@ -301,7 +251,7 @@ class _FormScreenState extends State<FormScreen>
                     ),
                   ],
                 ),
-                const SizedBox(height: 16), 
+                const SizedBox(height: 16), // <-- Espaciado después de Sexo
                 Row(
                   children: [
                     Expanded(
@@ -311,10 +261,9 @@ class _FormScreenState extends State<FormScreen>
                                 ? null
                                 : _estadoCivilController.text,
                         dropdownColor: Theme.of(context).colorScheme.background,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           labelText: 'Estado civil',
-                          labelStyle: Theme.of(context).textTheme.bodySmall,
-                          border: const OutlineInputBorder(
+                          border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(16)),
                           ),
                         ),
@@ -332,7 +281,9 @@ class _FormScreenState extends State<FormScreen>
                                     value: estado,
                                     child: Text(
                                       estado,
-                                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.bodyMedium?.copyWith(
                                         color: Theme.of(context).colorScheme.secondary,
                                       ),
                                     ),
@@ -354,10 +305,9 @@ class _FormScreenState extends State<FormScreen>
                 _buildSectionTitle('UBICACIÓN Y ORIGEN'),
                 TextFormField(
                   controller: _localidadController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Localidad',
-                    labelStyle: Theme.of(context).textTheme.bodySmall,
-                    border: const OutlineInputBorder(
+                    border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(16)),
                     ),
                   ),
@@ -366,10 +316,9 @@ class _FormScreenState extends State<FormScreen>
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _lugarOrigenController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Lugar de origen',
-                    labelStyle: Theme.of(context).textTheme.bodySmall,
-                    border: const OutlineInputBorder(
+                    border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(16)),
                     ),
                   ),
@@ -380,10 +329,9 @@ class _FormScreenState extends State<FormScreen>
                 DropdownButtonFormField<String>(
                   value: _nivelEstudios,
                   dropdownColor: Theme.of(context).colorScheme.background,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Escolaridad',
-                    labelStyle: Theme.of(context).textTheme.bodySmall,
-                    border: const OutlineInputBorder(
+                    border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(16)),
                     ),
                   ),
@@ -401,12 +349,8 @@ class _FormScreenState extends State<FormScreen>
                               value: nivel,
                               child: Text(
                                 nivel,
-                                style: Theme.of(
-                                  context,
-                                ).textTheme.bodyMedium?.copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                ),
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(color: Theme.of(context).colorScheme.secondary),
                               ),
                             ),
                           )
@@ -421,10 +365,9 @@ class _FormScreenState extends State<FormScreen>
                 SizedBox(height: 16),
                 TextFormField(
                   controller: _fuenteTrabajoController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Fuente principal de trabajo',
-                    labelStyle: Theme.of(context).textTheme.bodySmall,
-                    border: const OutlineInputBorder(
+                    border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(16)),
                     ),
                   ),
@@ -435,10 +378,9 @@ class _FormScreenState extends State<FormScreen>
                 _buildSectionTitle('CULTURA Y FAMILIA'),
                 TextFormField(
                   controller: _lenguaController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Lengua materna',
-                    labelStyle: Theme.of(context).textTheme.bodySmall,
-                    border: const OutlineInputBorder(
+                    border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(16)),
                     ),
                   ),
@@ -447,10 +389,9 @@ class _FormScreenState extends State<FormScreen>
                 SizedBox(height: 16),
                 TextFormField(
                   controller: _grupoEtnicoController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Grupo étnico',
-                    labelStyle: Theme.of(context).textTheme.bodySmall,
-                    border: const OutlineInputBorder(
+                    border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(16)),
                     ),
                   ),
@@ -464,10 +405,9 @@ class _FormScreenState extends State<FormScreen>
                           ? null
                           : _tenenciaTierraController.text,
                   dropdownColor: Theme.of(context).colorScheme.background,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Tenencia de la tierra',
-                    labelStyle: Theme.of(context).textTheme.bodySmall,
-                    border: const OutlineInputBorder(
+                    border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(16)),
                     ),
                   ),
@@ -479,12 +419,8 @@ class _FormScreenState extends State<FormScreen>
                               value: opcion,
                               child: Text(
                                 opcion,
-                                style: Theme.of(
-                                  context,
-                                ).textTheme.bodyMedium?.copyWith(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
-                                ),
+                                style: Theme.of(context).textTheme.bodyMedium
+                                    ?.copyWith(color: Theme.of(context).colorScheme.secondary),
                               ),
                             ),
                           )
@@ -499,10 +435,9 @@ class _FormScreenState extends State<FormScreen>
                 SizedBox(height: 16),
                 TextFormField(
                   controller: _numHijosController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     labelText: 'Número de hijos',
-                    labelStyle: Theme.of(context).textTheme.bodySmall,
-                    border: const OutlineInputBorder(
+                    border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(16)),
                     ),
                   ),
@@ -514,20 +449,6 @@ class _FormScreenState extends State<FormScreen>
                   onPressed: _guardarUsuario,
                   icon: const Icon(Icons.save),
                   label: const Text('Guardar'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.primary,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 24,
-                      vertical: 12,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                ElevatedButton.icon(
-                  onPressed: _generateAndSharePDF,
-                  icon: const Icon(Icons.picture_as_pdf),
-                  label: const Text('Generar y Compartir PDF'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Theme.of(context).colorScheme.primary,
                     foregroundColor: Colors.white,
