@@ -28,7 +28,7 @@ class About extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            "Profesor a cargo: Dr. Juan Pérez",
+            "Profesor a cargo: Dr. Alberto Martínez Barbosa",
             style: Theme.of(context).textTheme.bodyMedium,
             textAlign: TextAlign.center,
           ),
@@ -39,12 +39,11 @@ class About extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           Text(
-            "• Nombre 1\n• Nombre 2\n• Nombre 3", // Cambia por los nombres reales
+            "• Sergio Elías Robles Ignacio\n• Kevin Rafael Díaz López\n• Rosendo Edén Mendoza Casarrubia",
             style: Theme.of(context).textTheme.bodySmall,
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 16),
-          // Idea extra: versión de la app
           Text(
             "Versión 1.0.0",
             style: Theme.of(context).textTheme.bodySmall?.copyWith(

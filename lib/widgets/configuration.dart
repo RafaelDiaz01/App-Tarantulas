@@ -51,12 +51,31 @@ class Configuration extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             const Divider(),
-            // Sección 2: Acerca de 
+            // Sección 2: Acerca de
             Row(
               children: [
                 IconButton(
                   icon: const Icon(Icons.info_outline),
-                  onPressed: About.new,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (context) => Scaffold(
+                              appBar: AppBar(
+                                title: Text(
+                                  "Acerca de",
+                                  style:
+                                      Theme.of(
+                                        context,
+                                      ).textTheme.titleMedium?.copyWith(),
+                                ),
+                              ),
+                              body: SingleChildScrollView(child: About()),
+                            ),
+                      ),
+                    );
+                  },
                 ),
                 const SizedBox(width: 10),
                 Column(
