@@ -110,7 +110,10 @@ class _EncuestaScreenState extends State<EncuestaScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              color: Theme.of(context).colorScheme.primary,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+                borderRadius: BorderRadius.circular(25),
+              ),
               child: Padding(
                 padding: EdgeInsets.all(10),
                 child: Text(
@@ -147,11 +150,30 @@ class _EncuestaScreenState extends State<EncuestaScreen> {
                 (opcion) => Padding(
                   padding: const EdgeInsets.symmetric(vertical: 6),
                   child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                          Theme.of(
+                            context,
+                          ).colorScheme.primary, // Color de fondo
+                      foregroundColor:
+                          Theme.of(
+                            context,
+                          ).colorScheme.onPrimary, // Color del texto/ícono
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                          18,
+                        ), // Bordes redondeados opcional
+                      ),
+                    ),
                     onPressed: () {
                       _guardarRespuesta(opcion);
                       _siguiente();
                     },
-                    child: Text(opcion),
+                    child: Text(
+                      opcion,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
               ),

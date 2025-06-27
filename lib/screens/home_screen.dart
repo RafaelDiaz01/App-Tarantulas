@@ -65,7 +65,7 @@ class MyHomeScreen extends StatelessWidget {
                                 ).textTheme.titleMedium?.copyWith(),
                             textAlign: TextAlign.center,
                           ),
-                          const SizedBox(height: 70),
+                          const SizedBox(height: 50),
                           Center(
                             child: SizedBox(
                               width: MediaQuery.of(context).size.width * 0.7,
@@ -87,7 +87,7 @@ class MyHomeScreen extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 30),
                     Center(
                       child: SizedBox(
                         width: 200,
