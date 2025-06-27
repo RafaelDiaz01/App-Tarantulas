@@ -3,6 +3,7 @@ import 'package:uuid/uuid.dart';
 import 'package:hive/hive.dart';
 import '../models/usuario_model.dart';
 import '../configurations/app_theme.dart';
+import '../screens/encuestaScreen.dart';
 
 final Color azulClaro = const Color(0xFF42A5F5);
 
@@ -13,8 +14,7 @@ class FormScreen extends StatefulWidget {
   State<FormScreen> createState() => _FormScreenState();
 }
 
-class _FormScreenState extends State<FormScreen>
-    with SingleTickerProviderStateMixin {
+class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   late AnimationController _controller;
   late Animation<double> _animation;
@@ -114,7 +114,13 @@ class _FormScreenState extends State<FormScreen>
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Usuario guardado con éxito')),
       );
-      Navigator.pop(context);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EncuestaScreen(usuario: nuevoUsuario),
+        ),
+      );
     }
   }
 
@@ -240,7 +246,7 @@ class _FormScreenState extends State<FormScreen>
                 TextFormField(
                   controller: _lugarOrigenController,
                   decoration: const InputDecoration(labelText: 'Lugar de origen'),
-                  validator: (v) => v!.isEmpty ? 'Requerido': null,
+                  validator: (v) => v!.isEmpty ? 'Requerido' : null,
                 ),
                 const SizedBox(height: 16),
                 _buildSectionTitle('EDUCACIÓN Y TRABAJO'),
@@ -284,8 +290,11 @@ class _FormScreenState extends State<FormScreen>
                   value: _tenenciaTierraController.text.isEmpty ? null : _tenenciaTierraController.text,
                   dropdownColor: appColorScheme.background,
                   decoration: const InputDecoration(labelText: 'Tenencia de la tierra'),
-                  validator: (v) => v == null ? 'Requerido' :null,
-                  items: ['Comunal', 'Privada'] .map((opcion) => DropdownMenuItem(value: opcion, child: Text(opcion, style: TextStyle(color: azulClaro)))).toList(),
+                  validator: (v) => v == null ? 'Requerido' : null,
+                  items: ['Comunal', 'Privada']
+                      .map((opcion) => DropdownMenuItem(
+                          value: opcion, child: Text(opcion, style: TextStyle(color: azulClaro))))
+                      .toList(),
                   onChanged: (value) {
                     setState(() {
                       _tenenciaTierraController.text = value!;
@@ -297,7 +306,7 @@ class _FormScreenState extends State<FormScreen>
                   controller: _numHijosController,
                   decoration: const InputDecoration(labelText: 'Número de hijos'),
                   keyboardType: TextInputType.number,
-                  validator: (v) => v!.isEmpty ? 'Requerido': null,
+                  validator: (v) => v!.isEmpty ? 'Requerido' : null,
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton.icon(

@@ -46,6 +46,9 @@ class Usuario extends HiveObject {
   @HiveField(13)
   DateTime fechaRegistro;
 
+  @HiveField(14)
+  Map<String, String>? respuestas;
+
   Usuario({
     required this.id,
     required this.nombre,
@@ -61,5 +64,42 @@ class Usuario extends HiveObject {
     required this.numeroHijos,
     required this.localidad,
     required this.fechaRegistro,
+    this.respuestas,
   });
+
+  Usuario copyWith({
+    String? id,
+    String? nombre,
+    int? edad,
+    String? sexo,
+    String? lenguaMaterna,
+    String? grupoEtnico,
+    String? fuenteTrabajo,
+    String? escolaridad,
+    String? tenenciaTierra,
+    String? estadoCivil,
+    String? lugarOrigen,
+    int? numeroHijos,
+    String? localidad,
+    DateTime? fechaRegistro,
+    Map<String, String>? respuestas,
+  }) {
+    return Usuario(
+      id: id ?? this.id,
+      nombre: nombre ?? this.nombre,
+      edad: edad ?? this.edad,
+      sexo: sexo ?? this.sexo,
+      lenguaMaterna: lenguaMaterna ?? this.lenguaMaterna,
+      grupoEtnico: grupoEtnico ?? this.grupoEtnico,
+      fuenteTrabajo: fuenteTrabajo ?? this.fuenteTrabajo,
+      escolaridad: escolaridad ?? this.escolaridad,
+      tenenciaTierra: tenenciaTierra ?? this.tenenciaTierra,
+      estadoCivil: estadoCivil ?? this.estadoCivil,
+      lugarOrigen: lugarOrigen ?? this.lugarOrigen,
+      numeroHijos: numeroHijos ?? this.numeroHijos,
+      localidad: localidad ?? this.localidad,
+      fechaRegistro: fechaRegistro ?? this.fechaRegistro,
+      respuestas: respuestas ?? this.respuestas,
+    );
+  }
 }
