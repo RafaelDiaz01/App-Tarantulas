@@ -1,3 +1,8 @@
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'package:hive/hive.dart';
@@ -114,6 +119,42 @@ class _FormScreenState extends State<FormScreen>
       );
       Navigator.pop(context);
     }
+  }
+
+  Future<void> _generateAndSharePDF() async {
+    final pdf = pw.Document();
+
+    pdf.addPage(
+      pw.Page(
+        build: (pw.Context context) {
+          return pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Text('Reporte de Usuario', style: pw.TextStyle(fontSize: 24)),
+              pw.SizedBox(height: 12),
+              pw.Text('Nombre: ${_nombreController.text}'),
+              pw.Text('Edad: ${_edadController.text}'),
+              pw.Text('Sexo: $_sexo'),
+              pw.Text('Estado Civil: ${_estadoCivilController.text}'),
+              pw.Text('Localidad: ${_localidadController.text}'),
+              pw.Text('Lugar de Origen: ${_lugarOrigenController.text}'),
+              pw.Text('Escolaridad: $_nivelEstudios'),
+              pw.Text('Fuente de Trabajo: ${_fuenteTrabajoController.text}'),
+              pw.Text('Lengua Materna: ${_lenguaController.text}'),
+              pw.Text('Grupo Étnico: ${_grupoEtnicoController.text}'),
+              pw.Text('Tenencia de Tierra: ${_tenenciaTierraController.text}'),
+              pw.Text('Número de Hijos: ${_numHijosController.text}'),
+            ],
+          );
+        },
+      ),
+    );
+
+    final output = await getTemporaryDirectory();
+    final file = File('${output.path}/reporte_usuario.pdf');
+    await file.writeAsBytes(await pdf.save());
+
+    await Share.shareXFiles([XFile(file.path)], text: 'Te comparto el PDF del formulario.');
   }
 
   @override
@@ -448,6 +489,20 @@ class _FormScreenState extends State<FormScreen>
                   label: const Text('Guardar'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: appColorScheme.primary,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                ElevatedButton.icon(
+                  onPressed: _generateAndSharePDF,
+                  icon: const Icon(Icons.picture_as_pdf),
+                  label: const Text('Generar y Compartir PDF'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: appColorScheme.secondary,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24,
