@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import 'package:hive/hive.dart';
 import '../models/usuario_model.dart';
-import '../configurations/app_theme.dart';
 import '../screens/encuestaScreen.dart';
 
 final Color azulClaro = const Color(0xFF42A5F5);
@@ -14,7 +13,8 @@ class FormScreen extends StatefulWidget {
   State<FormScreen> createState() => _FormScreenState();
 }
 
-class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateMixin {
+class _FormScreenState extends State<FormScreen>
+    with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   late AnimationController _controller;
   late Animation<double> _animation;
@@ -162,7 +162,6 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
           "Configuraciones",
           style: Theme.of(context).textTheme.titleMedium?.copyWith(),
         ),
-        backgroundColor: Theme.of(context).colorScheme.primary,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(4),
           child: AnimatedBuilder(
@@ -170,8 +169,12 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
             builder:
                 (context, child) => LinearProgressIndicator(
                   value: _animation.value,
-                  backgroundColor: Colors.white.withOpacity(0.2),
-                  valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+                  backgroundColor: Theme.of(
+                    context,
+                  ).colorScheme.surface.withOpacity(0.2),
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Theme.of(context).colorScheme.primary,
+                  ),
                   minHeight: 4,
                 ),
           ),
@@ -292,7 +295,10 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                                       style: Theme.of(
                                         context,
                                       ).textTheme.bodyMedium?.copyWith(
-                                        color: Theme.of(context).colorScheme.secondary,
+                                        color:
+                                            Theme.of(
+                                              context,
+                                            ).colorScheme.secondary,
                                       ),
                                     ),
                                   ),
@@ -357,8 +363,12 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                               value: nivel,
                               child: Text(
                                 nivel,
-                                style: Theme.of(context).textTheme.bodyMedium
-                                    ?.copyWith(color: Theme.of(context).colorScheme.secondary),
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.bodyMedium?.copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                ),
                               ),
                             ),
                           )
@@ -427,8 +437,12 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                               value: opcion,
                               child: Text(
                                 opcion,
-                                style: Theme.of(context).textTheme.bodyMedium
-                                    ?.copyWith(color: Theme.of(context).colorScheme.secondary),
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.bodyMedium?.copyWith(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                ),
                               ),
                             ),
                           )
