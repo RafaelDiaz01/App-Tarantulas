@@ -18,6 +18,22 @@ class MyHomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent, // Hace el fondo transparente
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(Icons.settings),
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder:
+                    (context) => Configuration(onToggleTheme: onToggleTheme),
+              ),
+            );
+          },
+        ),
+      ),
       body: Stack(
         children: [
           SafeArea(
@@ -43,10 +59,10 @@ class MyHomeScreen extends StatelessWidget {
                           const SizedBox(height: 15),
                           Text(
                             'Universidad de la Sierra Juárez',
-                            style: Theme.of(
-                              context,
-                            ).textTheme.titleMedium?.copyWith(
-                            ),
+                            style:
+                                Theme.of(
+                                  context,
+                                ).textTheme.titleMedium?.copyWith(),
                             textAlign: TextAlign.center,
                           ),
                           const SizedBox(height: 70),

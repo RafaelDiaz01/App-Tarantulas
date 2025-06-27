@@ -148,7 +148,7 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
         style: TextStyle(
           fontSize: 18,
           fontWeight: FontWeight.bold,
-          color: appColorScheme.primary,
+          color: Theme.of(context).colorScheme.primary,
         ),
       ),
     );
@@ -162,7 +162,7 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
           "Configuraciones",
           style: Theme.of(context).textTheme.titleMedium?.copyWith(),
         ),
-        backgroundColor: appColorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(4),
           child: AnimatedBuilder(
@@ -222,7 +222,7 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                     Expanded(
                       child: DropdownButtonFormField<String>(
                         value: _sexo,
-                        dropdownColor: appColorScheme.background,
+                        dropdownColor: Theme.of(context).colorScheme.background,
                         decoration: const InputDecoration(
                           labelText: 'Sexo',
                           border: OutlineInputBorder(
@@ -240,7 +240,10 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                                       style: Theme.of(
                                         context,
                                       ).textTheme.bodyMedium?.copyWith(
-                                        color: appColorScheme.secondary,
+                                        color:
+                                            Theme.of(
+                                              context,
+                                            ).colorScheme.secondary,
                                       ),
                                     ),
                                   ),
@@ -265,7 +268,7 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                             _estadoCivilController.text.isEmpty
                                 ? null
                                 : _estadoCivilController.text,
-                        dropdownColor: appColorScheme.background,
+                        dropdownColor: Theme.of(context).colorScheme.background,
                         decoration: const InputDecoration(
                           labelText: 'Estado civil',
                           border: OutlineInputBorder(
@@ -289,7 +292,7 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                                       style: Theme.of(
                                         context,
                                       ).textTheme.bodyMedium?.copyWith(
-                                        color: appColorScheme.secondary,
+                                        color: Theme.of(context).colorScheme.secondary,
                                       ),
                                     ),
                                   ),
@@ -333,7 +336,7 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                 _buildSectionTitle('EDUCACIÓN Y TRABAJO'),
                 DropdownButtonFormField<String>(
                   value: _nivelEstudios,
-                  dropdownColor: appColorScheme.background,
+                  dropdownColor: Theme.of(context).colorScheme.background,
                   decoration: const InputDecoration(
                     labelText: 'Escolaridad',
                     border: OutlineInputBorder(
@@ -355,7 +358,7 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                               child: Text(
                                 nivel,
                                 style: Theme.of(context).textTheme.bodyMedium
-                                    ?.copyWith(color: appColorScheme.secondary),
+                                    ?.copyWith(color: Theme.of(context).colorScheme.secondary),
                               ),
                             ),
                           )
@@ -409,7 +412,7 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                       _tenenciaTierraController.text.isEmpty
                           ? null
                           : _tenenciaTierraController.text,
-                  dropdownColor: appColorScheme.background,
+                  dropdownColor: Theme.of(context).colorScheme.background,
                   decoration: const InputDecoration(
                     labelText: 'Tenencia de la tierra',
                     border: OutlineInputBorder(
@@ -425,7 +428,7 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                               child: Text(
                                 opcion,
                                 style: Theme.of(context).textTheme.bodyMedium
-                                    ?.copyWith(color: appColorScheme.secondary),
+                                    ?.copyWith(color: Theme.of(context).colorScheme.secondary),
                               ),
                             ),
                           )
@@ -455,7 +458,7 @@ class _FormScreenState extends State<FormScreen> with SingleTickerProviderStateM
                   icon: const Icon(Icons.save),
                   label: const Text('Guardar'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: appColorScheme.primary,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24,

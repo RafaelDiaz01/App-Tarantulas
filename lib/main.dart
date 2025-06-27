@@ -47,8 +47,8 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: 'App Tarantulas',
       themeMode: _themeMode,
-      theme: appTheme.copyWith(brightness: Brightness.light),
-      darkTheme: appTheme.copyWith(brightness: Brightness.dark),
+      theme: appThemeLight, // Tema claro
+      darkTheme: appThemeDark, // Tema oscuro
       debugShowCheckedModeBanner: false,
       home: MyHomeScreen(
         title: 'Tliltocatl Schroederi',
