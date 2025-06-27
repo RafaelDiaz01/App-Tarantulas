@@ -2,13 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-// Sirve para definir el tema de la aplicacion.
-final appColorScheme = ColorScheme.fromSeed(
-  brightness: Brightness.dark,
-  seedColor: const Color.fromARGB(255, 1, 58, 99),
-  surface: const Color.fromARGB(255, 1, 58, 99),
-);
-
 // Varible final que define el estilo que se le dara a los textos de la aplicacion.
 final appTextTheme = GoogleFonts.inconsolataTextTheme().copyWith(
   bodySmall: GoogleFonts.inconsolata(fontWeight: FontWeight.normal, fontSize: 14),
@@ -21,12 +14,6 @@ final appTextTheme = GoogleFonts.inconsolataTextTheme().copyWith(
 
 final appTextName = GoogleFonts.michromaTextTheme().copyWith(
   titleLarge: GoogleFonts.michroma(fontWeight: FontWeight.bold, fontSize: 55)
-);
-
-final appTheme = ThemeData().copyWith(
-  scaffoldBackgroundColor: appColorScheme.surface,
-  colorScheme: appColorScheme,
-  textTheme: appTextTheme,
 );
 
 final appThemeLight = ThemeData(
