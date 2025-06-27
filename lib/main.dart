@@ -14,8 +14,7 @@ void main() async {
   Hive.registerAdapter(UsuarioAdapter());
   Hive.registerAdapter(EncuestaAdapter());
 
-  await Hive.close();
-
+  // Borra las cajas solo para desarrollo, comentar para producción
   await Hive.deleteBoxFromDisk('usuarios');
   await Hive.deleteBoxFromDisk('encuestas');
 

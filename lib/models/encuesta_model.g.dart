@@ -22,13 +22,14 @@ class EncuestaAdapter extends TypeAdapter<Encuesta> {
       respuestas: (fields[2] as Map).cast<String, String>(),
       fecha: fields[3] as DateTime,
       enviada: fields[4] as bool,
+      comentarioPersonal: fields[5] as String?,
     );
   }
 
   @override
   void write(BinaryWriter writer, Encuesta obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(6)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -38,7 +39,9 @@ class EncuestaAdapter extends TypeAdapter<Encuesta> {
       ..writeByte(3)
       ..write(obj.fecha)
       ..writeByte(4)
-      ..write(obj.enviada);
+      ..write(obj.enviada)
+      ..writeByte(5)
+      ..write(obj.comentarioPersonal);
   }
 
   @override
