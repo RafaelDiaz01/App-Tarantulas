@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../configurations/app_theme.dart'; // Importa tu tema
+import '../configurations/app_theme.dart'; // Importa los temas  
 
 // Define el color azul claro que quieres usar (puedes usar uno del tema o definir uno aquí)
 final Color azulClaro = const Color(0xFF42A5F5); // Azul claro, puedes cambiarlo
